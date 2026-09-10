@@ -1,0 +1,83 @@
+/*
+ * Shared visual language for valyou store promotional assets.
+ * Single dark "world" on purpose — these are brand banners, not a themed app.
+ * Palette + type mirror the landing page (web/index.html).
+ */
+:root {
+  --ground: #0a0c11;
+  --ground-2: #0c0f16;
+  --surface: #12151d;
+  --surface-2: #171b25;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --ink: #eef1f7;
+  --ink-soft: #9aa3b4;
+  --ink-faint: #6b7486;
+  --accent: #6b8cff;
+  --accent-2: #a082ff;
+  --safe: #56e0b0;
+  --flag: #ff8095;
+  --grad: linear-gradient(135deg, #4f7cff 0%, #8b6cff 100%);
+  --serif: ui-serif, "New York", Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", "Consolas", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--ground); }
+body {
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  position: relative;
+}
+
+/* the frame is exactly the asset size; each file sets .stage width/height */
+.stage {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 80% at 82% -10%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 60%),
+    radial-gradient(52% 70% at 6% 8%, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 60%),
+    var(--ground);
+}
+
+/* brand mark */
+.shield { display: block; }
+.wordmark { font-family: var(--sans); font-weight: 650; letter-spacing: -0.02em; }
+.eyebrow {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+.display { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; line-height: 1.02; }
+.display .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+.mono { font-family: var(--mono); }
+
+/* mini feed motif */
+.mini-card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 15px;
+}
+.mini-head { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.mini-av { width: 26px; height: 26px; border-radius: 999px; background: linear-gradient(135deg, #4f7cff, #8b6cff); flex: none; opacity: 0.85; }
+.mini-who { font-size: 14px; font-weight: 600; }
+.mini-when { font-size: 12px; color: var(--ink-faint); }
+.mini-text { font-size: 14px; color: var(--ink-soft); line-height: 1.45; }
+.mini-kept { display: inline-flex; align-items: center; gap: 5px; margin-top: 9px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--safe); }
+.mini-veil { display: flex; align-items: center; gap: 11px; }
+.mini-veil .lab { font-size: 14px; color: var(--ink-soft); }
+.mini-veil .cat { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--flag); }
+.mini-veil .show { margin-left: auto; font-size: 12px; font-weight: 560; color: var(--accent); border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px; }
+.redact { color: transparent; background: repeating-linear-gradient(90deg, var(--ink-faint) 0 14px, transparent 14px 20px); -webkit-background-clip: text; background-clip: text; opacity: 0.5; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: 7px 14px;
+}
+.pill .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--safe); box-shadow: 0 0 10px var(--safe); }

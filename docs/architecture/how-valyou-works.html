@@ -1,0 +1,795 @@
+<!--
+valyou — on-device social media content filtering.
+Copyright (C) 2026 Sunayu LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Additional permission under GNU GPL version 3 section 7: this
+Program may be distributed through the Apple App Store, Google Play,
+or comparable platforms whose terms would otherwise be incompatible
+with the GPL. See LICENSE-EXCEPTION.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How valyou Works — the engineering, explained simply</title>
+<style>
+  :root{
+    --ground:#f4f6fb; --surface:#ffffff; --sunken:#eef1f8;
+    --line:rgba(18,22,34,.10); --line-strong:rgba(18,22,34,.20);
+    --ink:#101420; --ink-soft:#4d5872; --ink-faint:#7b849b;
+    --accent:#3a63ec; --accent-soft:#e7ecfe;
+    --safe:#0f9d73; --safe-soft:#e2f6ef;
+    --flag:#d8384f; --flag-soft:#fdeaed;
+    --warn:#b8730a; --warn-soft:#fdf1dc;
+    --serif:ui-serif,"New York",Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Code",Consolas,monospace;
+    --measure:38rem; --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:17px; line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:56rem;margin:0 auto;padding:0 1.5rem 5rem}
+  p,ul,ol{max-width:var(--measure)}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+  a{color:var(--accent)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+       padding:.12em .38em;border-radius:5px;border:1px solid var(--line)}
+
+  /* ---------- cover ---------- */
+  .cover{
+    min-height:86vh;display:flex;flex-direction:column;justify-content:center;
+    padding:4rem 0 3rem;border-bottom:1px solid var(--line);
+  }
+  .shield{width:70px;height:70px;margin-bottom:2rem}
+  .cover h1{font-size:clamp(2.6rem,7vw,4.4rem);line-height:1.04;margin:0 0 1.2rem}
+  .cover .sub{font-size:clamp(1.1rem,2.4vw,1.5rem);color:var(--ink-soft);
+              max-width:34rem;line-height:1.5;font-family:var(--serif)}
+  .cover .meta{margin-top:3rem;display:flex;flex-wrap:wrap;gap:.6rem 2rem;
+               font-size:.82rem;color:var(--ink-faint);
+               text-transform:uppercase;letter-spacing:.09em}
+  .cover .meta b{color:var(--ink-soft);font-weight:600}
+
+  /* ---------- reading aids ---------- */
+  .lede{font-family:var(--serif);font-size:1.24rem;line-height:1.62;color:var(--ink-soft)}
+  .chapter{padding-top:3.5rem;margin-top:3.5rem;border-top:1px solid var(--line)}
+  .chapter-no{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;
+              text-transform:uppercase;color:var(--accent);font-weight:600}
+  .chapter h2{font-size:clamp(1.8rem,4vw,2.5rem);margin:.5rem 0 1rem}
+  h3{font-size:1.25rem;margin:2.4rem 0 .6rem}
+
+  .callout{border-radius:var(--r);padding:1.15rem 1.35rem;margin:1.8rem 0;
+           border:1px solid var(--line);background:var(--surface);max-width:var(--measure)}
+  .callout .tag{display:block;font-family:var(--mono);font-size:.7rem;
+                letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem;font-weight:600}
+  .callout p{margin:.35rem 0}
+  .callout p:last-child{margin-bottom:0}
+  .analogy{background:var(--accent-soft);border-color:transparent}
+  .analogy .tag{color:var(--accent)}
+  .hard{background:var(--warn-soft);border-color:transparent}
+  .hard .tag{color:var(--warn)}
+  .win{background:var(--safe-soft);border-color:transparent}
+  .win .tag{color:var(--safe)}
+
+  /* ---------- diagrams ---------- */
+  figure{margin:2.5rem 0;max-width:100%}
+  figcaption{font-size:.86rem;color:var(--ink-faint);margin-top:.8rem;
+             font-family:var(--sans);max-width:var(--measure)}
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.55rem}
+  .step{flex:1 1 8.5rem;background:var(--surface);border:1px solid var(--line);
+        border-radius:12px;padding:.85rem .9rem;min-width:8rem}
+  .step .n{font-family:var(--mono);font-size:.68rem;color:var(--accent);
+           letter-spacing:.1em;font-weight:700}
+  .step b{display:block;margin:.2rem 0 .15rem;font-size:.95rem}
+  .step span{font-size:.82rem;color:var(--ink-soft);line-height:1.45;display:block}
+  .arrow{align-self:center;color:var(--ink-faint);font-size:1.1rem}
+
+  .stack{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+         padding:1.2rem;display:grid;gap:.5rem}
+  .layer{border-radius:10px;padding:.7rem .9rem;font-size:.92rem;border:1px solid var(--line)}
+  .layer b{font-family:var(--sans)}
+  .layer span{color:var(--ink-soft);font-size:.85rem}
+  .l-shell{background:var(--sunken)}
+  .l-engine{background:var(--accent-soft);border-color:transparent}
+  .l-native{background:var(--safe-soft);border-color:transparent}
+
+  /* ---------- tables ---------- */
+  .tablewrap{overflow-x:auto;margin:1.8rem 0;border:1px solid var(--line);
+             border-radius:var(--r);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:34rem}
+  th,td{text-align:left;padding:.7rem .95rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--sans);font-size:.75rem;text-transform:uppercase;
+     letter-spacing:.08em;color:var(--ink-faint);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  /* ---------- code ---------- */
+  pre{background:#0e1220;color:#e7ebf6;border-radius:12px;padding:1rem 1.15rem;
+      overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.6;
+      margin:1.5rem 0;max-width:100%}
+  pre .c{color:#8d97b5}
+  pre .k{color:#9fb4ff}
+  pre .s{color:#8fe0b8}
+
+  /* ---------- glossary ---------- */
+  dl{max-width:var(--measure)}
+  dt{font-weight:650;margin-top:1.1rem}
+  dd{margin:.2rem 0 0;color:var(--ink-soft)}
+
+  .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;
+          text-transform:uppercase;color:var(--ink-faint)}
+  .big-num{font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem;margin:1.8rem 0}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem}
+  .card p{font-size:.9rem;color:var(--ink-soft);margin:.4rem 0 0}
+
+  footer{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--line);
+         font-size:.85rem;color:var(--ink-faint)}
+
+  /* ---------- print / PDF ---------- */
+  @page{size:Letter;margin:16mm 14mm}
+  @media print{
+    body{background:#fff;font-size:11.5pt;line-height:1.6}
+    .page{max-width:100%;padding:0}
+    .cover{min-height:auto;padding:0 0 2rem;break-after:page}
+    /* Let chapters flow rather than forcing a page each — a hard break per
+       chapter left half-empty pages wherever a chapter ended near the top. */
+    .chapter{break-before:auto;padding-top:1.6rem;margin-top:1.6rem}
+    .callout,figure,.tablewrap,pre,.stack,.grid2,.card{break-inside:avoid}
+    h2,h3{break-after:avoid}
+    p,li,dd{orphans:3;widows:3}
+    .lede{orphans:2;widows:2}
+    a{color:var(--ink);text-decoration:none}
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#0a0c11;--surface:#141824;--sunken:#1b2030;
+      --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.2);
+      --ink:#eef1f7;--ink-soft:#a3adc2;--ink-faint:#7d8699;
+      --accent:#8aa4ff;--accent-soft:#1b2340;
+      --safe:#5ddcae;--safe-soft:#122b24;
+      --flag:#ff8095;--flag-soft:#2d1720;
+      --warn:#e3ac52;--warn-soft:#2b2213;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0a0c11;--surface:#141824;--sunken:#1b2030;
+    --line:rgba(255,255,255,.10);--ink:#eef1f7;--ink-soft:#a3adc2;--ink-faint:#7d8699;
+    --accent:#8aa4ff;--accent-soft:#1b2340;--safe:#5ddcae;--safe-soft:#122b24;
+    --flag:#ff8095;--flag-soft:#2d1720;--warn:#e3ac52;--warn-soft:#2b2213;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <svg class="shield" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 2 4 5.5v6c0 5 3.4 9.2 8 10.5 4.6-1.3 8-5.5 8-10.5v-6L12 2Z"
+          fill="#3a63ec" opacity=".14"/>
+    <path d="M12 2 4 5.5v6c0 5 3.4 9.2 8 10.5 4.6-1.3 8-5.5 8-10.5v-6L12 2Z"
+          stroke="#3a63ec" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="m8.5 12 2.4 2.4 4.6-4.8" stroke="#3a63ec" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <h1>How valyou Works</h1>
+  <p class="sub">A tour of every moving part in a program that reads a social media
+     feed faster than you can blink and hides the cruelty before it reaches your eyes —
+     without ever sending a single word to anybody.</p>
+  <div class="meta">
+    <span><b>Engineering architecture</b></span>
+    <span>No prior engineering knowledge assumed</span>
+    <span><b>Sunayu LLC</b> · 2026</span>
+    <span>GPL-3.0-or-later</span>
+  </div>
+</header>
+
+<!-- ============ INTRO ============ -->
+<section class="chapter" style="border-top:none">
+  <p class="chapter-no">Start here</p>
+  <h2>The problem, in one paragraph</h2>
+  <p class="lede">Social media apps decide what you see. They are very good at
+    showing you things that make you angry, because angry people keep scrolling,
+    and scrolling makes money. valyou is a small program that sits between the
+    feed and your eyes and quietly removes the worst of it — racist and sexist
+    hate, threats of violence, bullying, and posts engineered to enrage you.</p>
+
+  <p>That sentence hides an enormous amount of engineering. To pull it off, valyou
+    has to do six hard things in the time it takes a post to slide onto your screen:</p>
+
+  <figure>
+    <div class="flow">
+      <div class="step"><span class="n">01</span><b>Find</b><span>Locate every post on a page built to be unreadable by outsiders</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">02</span><b>Read</b><span>Pull out the words a human would actually see</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">03</span><b>Judge</b><span>Decide if it is hateful, violent, bullying, or rage bait</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">04</span><b>Act</b><span>Hide it, blur it, or label it — your choice</span></div>
+    </div>
+    <figcaption>The whole pipeline, minus the details. Steps 1–4 run in about
+      a quarter of a millisecond per post — roughly a thousand times faster than
+      an eye blink.</figcaption>
+  </figure>
+
+  <p>And two more that are easy to forget and impossible to skip: it must
+    <b>never phone home</b> (nothing you read may leave your device), and it must
+    <b>be wrong gracefully</b> — because a filter that hides your grandmother's
+    birthday post gets uninstalled by dinnertime.</p>
+
+  <div class="callout analogy">
+    <span class="tag">The big analogy</span>
+    <p>Imagine a librarian who stands beside you while you flip through a magazine.
+      She reads every page a half-second before you do. If a page is full of
+      cruelty, she slips a sheet of frosted glass over it and writes a small note
+      explaining why. She never tells anyone what you read. She never leaves the
+      room. That librarian is valyou, and this document explains exactly how she
+      is built.</p>
+  </div>
+</section>
+
+<!-- ============ CH 1 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 1</p>
+  <h2>Finding the posts</h2>
+  <p class="lede">Before valyou can judge a post, it has to find one. This turns
+    out to be the single hardest part of the whole system, and it is where almost
+    every bug has lived.</p>
+
+  <h3>What a web page actually is</h3>
+  <p>A web page is not a picture. It is a <b>tree</b> of boxes inside boxes, called
+    the <b>DOM</b> (Document Object Model). A post is one branch of that tree —
+    a box containing the author's name, the text, maybe a photo, and the buttons.</p>
+
+  <p>If Facebook labeled that box <code>&lt;div class="post"&gt;</code>, this
+    chapter would be one sentence long. They don't. Facebook's boxes have
+    machine-generated names like <code>class="x1lliihq x1n2onr6"</code> that
+    <b>change every few weeks</b>. Anything built on those names breaks constantly.</p>
+
+  <div class="callout win">
+    <span class="tag">The trick</span>
+    <p>There is one part of the page they <em>can't</em> scramble: the labels that
+      screen readers use so blind people can browse. Those are called <b>ARIA</b>
+      attributes — things like <code>role="article"</code> for a post and
+      <code>role="feed"</code> for the scrolling list. Breaking them would make the
+      site unusable for blind users, which is both wrong and illegal in many places.
+      So valyou anchors everything on ARIA. It is the one honest handhold on a
+      slippery wall.</p>
+  </div>
+
+  <h3>Six rules, tried in order</h3>
+  <p>valyou keeps a short list of patterns, from most specific to most desperate,
+    and tries each in turn. Later rules politely step aside when an earlier one
+    already claimed a chunk of the page.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>What it looks for</th><th>Why it exists</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>A chat row</td><td>Messenger conversations</td></tr>
+      <tr><td class="num">2</td><td><code>role="article"</code></td><td>The normal feed post — the reliable case</td></tr>
+      <tr><td class="num">3</td><td>A numbered item in the feed</td><td>Suggested posts and ads that skip the article label</td></tr>
+      <tr><td class="num">4</td><td>A plain <code>&lt;article&gt;</code> tag</td><td>The phone version of the site</td></tr>
+      <tr><td class="num">5</td><td>A pop-up dialog</td><td>The full-screen "theater" view when you tap a video</td></tr>
+      <tr><td class="num">6</td><td>Any block of user-written text</td><td>The last resort — see below</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Why rule 6 exists (a story about losing)</h3>
+  <p>Rules 2 through 5 are each a <em>guess</em> about which wrapper Facebook used
+    today. A user reported that a post with a slur in it wasn't being hidden. It was
+    fixed. It was still broken. Fixed again. Still broken. Three times.</p>
+
+  <p>Each fix targeted the shell Facebook happened to use in that one view — the
+    feed, then the pop-up, then the reshare. Facebook has many shells and changes
+    them whenever it likes. Chasing them is a losing game.</p>
+
+  <div class="callout hard">
+    <span class="tag">The lesson</span>
+    <p>Stop chasing the <em>container</em> and match the <em>content</em>. Facebook
+      marks every piece of human-written text with the same little flag —
+      <code>dir="auto"</code>, which tells the browser "figure out if this language
+      reads left-to-right or right-to-left." Every caption has it, in every shell,
+      because it's about language, not layout. Rule 6 matches that. A caption is now
+      caught no matter which box Facebook wraps it in.</p>
+  </div>
+
+  <p>Rule 6 is bounded by two guards so it can't run wild: it ignores text that
+    belongs to a post another rule already judged, and it never touches the
+    <b>site's own furniture</b> — the search box, menus, navigation. That second
+    guard exists because of a genuinely funny bug: searching for a slur (to test
+    the filter!) caused valyou to blur <em>your own search box</em>, because your
+    typed word was, technically, hateful text on the page.</p>
+</section>
+
+<!-- ============ CH 2 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 2</p>
+  <h2>Reading the words</h2>
+  <p class="lede">Now that we have the box, we need the words inside it — exactly
+    the words a human would see, no more and no less.</p>
+
+  <p>The obvious approach is to ask the browser "give me all the text in this box."
+    That fails for a subtle reason: it would also scoop up the reply you're
+    half-typing in the comment field, and valyou's own labels, and count them as
+    part of the post. So instead valyou walks the tree itself, skipping the places
+    where <em>you</em> type and the labels it added.</p>
+
+  <h3>The bug that hid in plain sight for weeks</h3>
+  <p>The original walker read text only at the <b>leaves</b> of the tree — the
+    deepest boxes with nothing inside them. That's a normal, sensible design. It was
+    also silently wrong.</p>
+
+  <figure>
+    <pre><span class="c">&lt;!-- What Facebook actually sends: --&gt;</span>
+&lt;div&gt;
+  "You're not a [slur], you're a person."   <span class="c">← bare text, no box!</span>
+  &lt;span&gt;🤣&lt;/span&gt;                          <span class="c">← a leaf</span>
+  &lt;span&gt;🤣&lt;/span&gt;                          <span class="c">← a leaf</span>
+&lt;/div&gt;</pre>
+    <figcaption>The caption is a bare piece of text sitting <em>beside</em> the
+      emoji boxes, not inside one. A leaf-only reader collects "🤣 🤣" and misses
+      the entire sentence.</figcaption>
+  </figure>
+
+  <p>So valyou was reading a post's timestamp, the author's name, and two laughing
+    emoji — and concluding, quite reasonably, that nothing was wrong. The fix is one
+    idea: <b>read text wherever it lives</b>, whether or not it has a box of its own.
+    Programmers call this "mixed content," and it is everywhere once you look.</p>
+
+  <div class="callout win">
+    <span class="tag">Detail that matters</span>
+    <p>valyou also reads the <b>alt text</b> of images — the description platforms
+      generate for blind users ("May be an image of two people and text that says…").
+      It's free extra evidence, already sitting in the page, and it is often the only
+      clue about a photo.</p>
+  </div>
+</section>
+
+<!-- ============ CH 3 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 3</p>
+  <h2>Judging</h2>
+  <p class="lede">valyou now has a paragraph of text and must produce five numbers:
+    how racist, how sexist, how violent, how harassing, how rage-baiting is this?</p>
+
+  <h3>Two judges, not one</h3>
+  <p>There are two completely different ways to judge text, and valyou uses both,
+    for reasons that come down to trust.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <span class="kicker">Judge one</span>
+      <b>The rulebook</b>
+      <p>A curated list of slurs, threats, dehumanizing phrases ("they're animals"),
+        and rage-bait shapes (ALL CAPS, "you won't BELIEVE"). Exact, explainable,
+        and it never surprises you. But it only knows what it was told.</p>
+    </div>
+    <div class="card">
+      <span class="kicker">Judge two</span>
+      <b>The learning machine</b>
+      <p>A model trained on half a million real examples. It catches hostile
+        phrasing nobody wrote a rule for. But it cannot explain itself, and it
+        inherited every bias in its training data.</p>
+    </div>
+  </div>
+
+  <h3>Adding up evidence without double-counting</h3>
+  <p>Suppose a post contains a slur (strong evidence, 0.9) and is also written
+    entirely in capitals (weak evidence, 0.3). You can't add those — you'd get 1.2,
+    and probabilities can't exceed 1. You can't take the maximum either, because two
+    pieces of evidence really are worse than one.</p>
+
+  <p>valyou uses a rule called <b>noisy-OR</b>, which asks the question backwards:</p>
+
+  <figure>
+    <pre><span class="c">// What's the chance EVERY signal is wrong?</span>
+both wrong = (1 − 0.9) × (1 − 0.3) = 0.10 × 0.70 = <span class="s">0.07</span>
+
+<span class="c">// So the chance at least one is right:</span>
+score = 1 − 0.07 = <span class="s">0.93</span></pre>
+    <figcaption>Each new piece of evidence pushes the score closer to 1 but never
+      past it. Weak signals stack up; strong ones dominate. This is the same math
+      used to combine independent tests in medicine.</figcaption>
+  </figure>
+
+  <h3>Your dials, not ours</h3>
+  <p>A score only becomes an action after it clears a <b>threshold</b> you control.
+    Each category has its own dial and its own choice of what to do — hide it
+    completely, blur it behind frosted glass, or just tag it and leave it visible.
+    Slide the dial down and valyou gets stricter; slide it up and it relaxes.</p>
+</section>
+
+<!-- ============ CH 4 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 4</p>
+  <h2>Inside the learning machine</h2>
+  <p class="lede">This is the part people call "the AI." It is smaller and much
+    less mysterious than that word suggests: it is a long list of numbers and one
+    multiplication.</p>
+
+  <h3>Step 1 — chop the text into clues</h3>
+  <p>A computer can't read. So valyou chops the text into overlapping fragments
+    called <b>n-grams</b> and treats each as a yes/no clue:</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Kind</th><th>Example from "you people"</th><th>What it catches</th></tr></thead>
+    <tbody>
+      <tr><td>Single words</td><td><code>you</code>, <code>people</code></td><td>Topic</td></tr>
+      <tr><td>Word pairs</td><td><code>you people</code></td><td>Phrasing — the pair is hostile, neither word is</td></tr>
+      <tr><td>Letter runs (3–5)</td><td><code>peo</code>, <code>eopl</code>, <code>peopl</code></td><td>Misspellings and disguises: <code>h8</code>, <code>n1gger</code>, <code>h.a.t.e</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Those letter-runs are why deliberate misspelling doesn't work as an escape
+    hatch. Change a letter and most fragments survive.</p>
+
+  <h3>Step 2 — the hashing trick</h3>
+  <p>There are millions of possible fragments. Storing a dictionary of them would be
+    huge. So valyou runs each fragment through a <b>hash function</b> — a blender
+    that turns any text into a number — and keeps just 65,536 slots.</p>
+
+  <div class="callout analogy">
+    <span class="tag">Analogy</span>
+    <p>Like a coat check with 65,536 hooks and a rule for which hook each coat goes
+      on. Occasionally two coats share a hook (a "collision"). For this kind of model
+      that's a tiny amount of noise, and it's a fantastic trade for never needing the
+      dictionary at all.</p>
+  </div>
+
+  <h3>Step 3 — add up the weights</h3>
+  <p>Each of the 65,536 slots holds a <b>weight</b>: a number learned from training.
+    Positive means "this fragment suggests hate," negative means the opposite. To
+    score a post, valyou adds the weights of the fragments present, then squashes
+    the total into a 0–1 probability with an S-shaped curve called a <b>sigmoid</b>.</p>
+
+  <figure>
+    <pre><span class="k">score</span> = sigmoid( bias + Σ weight[fragment] )
+
+<span class="c">where sigmoid(z) = 1 / (1 + e^−z)</span>
+<span class="c">   big positive z → near 1     big negative z → near 0</span></pre>
+    <figcaption>That's the entire model. One addition per fragment, one curve at the
+      end. It runs in about 18 microseconds — 0.000018 seconds.</figcaption>
+  </figure>
+
+  <h3>Step 4 — five judges, one reading</h3>
+  <p>Version 1 had a single "is this hateful?" score, which had to be smeared across
+    three categories. Version 2 has <b>five separate sets of weights</b> — one per
+    harm — that all share the same fragment-chopping work. Racist language now
+    strengthens the racism score specifically.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Judge</th><th>Trained on</th><th class="num">Skill (AUC)</th><th class="num">Accuracy when it speaks</th></tr></thead>
+    <tbody>
+      <tr><td>Racist language</td><td>Jigsaw civil comments, HateXplain, Davidson</td><td class="num">0.967</td><td class="num">90%</td></tr>
+      <tr><td>Sexist language</td><td>EDOS (SemEval 2023), HateXplain</td><td class="num">0.897</td><td class="num">90%</td></tr>
+      <tr><td>Violence &amp; threats</td><td>Jigsaw threats, EDOS threats</td><td class="num">0.970</td><td class="num">97%</td></tr>
+      <tr><td>Harassment</td><td>Jigsaw insults, Davidson</td><td class="num">0.981</td><td class="num">98%</td></tr>
+      <tr><td>Rage bait</td><td>Stop Clickbait corpus</td><td class="num">0.995</td><td class="num">98%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><b>AUC</b> means: pick one hateful post and one clean post at random; how often
+    does the model rank the hateful one higher? 0.5 is a coin flip. 1.0 is perfect.
+    Trained on roughly <b>530,000</b> labeled examples, up from 25,000 in version 1.</p>
+
+  <h3>Step 5 — shrink it to fit</h3>
+  <p>65,536 weights × 5 judges as full-precision numbers would be over a megabyte.
+    Instead each weight is squeezed into a <b>single byte</b> (a number from −127 to
+    127) plus one shared scaling factor. That's <b>quantization</b>: about four times
+    smaller, for accuracy loss too small to notice.</p>
+
+  <div class="callout hard">
+    <span class="tag">The most important rule in this document</span>
+    <p>The learning machine is <b>never allowed to decide alone.</b> Its influence is
+      capped at 0.5, and every default action threshold is higher (0.55, 0.6, 0.7).
+      So on default settings, the model can strengthen evidence the rulebook already
+      found — it can never hide a post by itself.</p>
+    <p>This is deliberate. Hate-speech training data carries known biases; models
+      trained on it disproportionately flag African American English and posts by
+      the very people they're meant to protect. valyou's answer isn't to claim the
+      bias away — it's to <em>bound</em> it. A biased hint is survivable. A biased
+      judge is not. Automated tests enforce that cap on every single build.</p>
+  </div>
+</section>
+
+<!-- ============ CH 5 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 5</p>
+  <h2>Doing something about it</h2>
+  <p class="lede">A verdict is worthless until the page changes. This is the only
+    part of valyou allowed to modify what you see — deliberately kept separate from
+    everything that reads.</p>
+
+  <div class="grid2">
+    <div class="card"><b>Hide</b><p>Collapses to a slim bar naming the reason. Reversible in one tap.</p></div>
+    <div class="card"><b>Blur</b><p>Frosted glass over the post. You see something is there and choose.</p></div>
+    <div class="card"><b>Tag</b><p>A small label, nothing covered. For "I want to know, not be protected."</p></div>
+  </div>
+
+  <h3>Covering the right box</h3>
+  <p>Early versions covered the post and left the <b>headline above it</b> perfectly
+    readable — because Facebook puts the header <em>beside</em> the post box, not
+    inside it. Covering the body but not the title is worse than useless.</p>
+
+  <p>So the cover grows outward to the largest box that still contains
+    <b>only this post</b>, with three hard stops so it can never swallow a
+    neighbour: stop at the feed container, stop if another post appears inside,
+    stop at the site's own furniture.</p>
+
+  <div class="callout hard">
+    <span class="tag">The trap inside the fix</span>
+    <p>The first version of that growth rule stopped whenever it saw more than one
+      post-shaped box in the parent. It never grew at all — because Facebook nests
+      <em>comment previews</em> (which are also post-shaped) inside every post. The
+      rule now ignores boxes nested inside our own post and only stops for genuine
+      outsiders.</p>
+  </div>
+</section>
+
+<!-- ============ CH 6 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 6</p>
+  <h2>Stopping video before it starts</h2>
+  <p class="lede">Video is a different beast: by the time you've read a caption,
+    an autoplaying clip has already shown you fifty frames.</p>
+
+  <p>The obvious approach — wait for the video to start, then pause it — loses. You
+    always see a flicker, and modern players hide inside <b>shadow DOM</b>, a sealed
+    compartment whose events never reach the outside. valyou would pause it, the
+    player would retry, and the result looked like continuous playback.</p>
+
+  <h3>Locking the doors instead</h3>
+  <p>valyou's engine runs inside the page's own JavaScript world, which means it can
+    change the browser's own machinery before the site uses it. There are exactly
+    four ways a video can start, and all four are now guarded:</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Door</th><th>How the site opens it</th><th>The guard</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Calls <code>play()</code> in code</td><td>The function itself is replaced; it politely refuses</td></tr>
+      <tr><td>2</td><td>Sets the autoplay switch</td><td>The switch is intercepted and ignored</td></tr>
+      <tr><td>3</td><td>Writes the autoplay label onto the tag</td><td>Same interception, different spelling</td></tr>
+      <tr><td>4</td><td>Ships HTML that already says "autoplay"</td><td>A watcher strips it the instant it appears</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Facebook's feed uses door 4. Facebook's Reels use door 1. Guarding only one
+    leaves the other wide open — which is exactly what happened, twice.</p>
+
+  <div class="callout win">
+    <span class="tag">The polite refusal</span>
+    <p>When valyou blocks a play, it hands back the exact same error the browser
+      gives in Low Power Mode. Facebook's player already knows that error: it shows
+      a play button and stops trying. No crash, no infinite retry loop — the site
+      thinks the phone is saving battery.</p>
+  </div>
+
+  <h3>Making your tap work anyway</h3>
+  <p>Blocking autoplay is only half the job; the video must play when <em>you</em>
+    ask. That's harder than it sounds, because websites react to your finger lifting
+    (<code>pointerup</code>) a few milliseconds <em>before</em> the browser reports a
+    click. By the time valyou knows you tapped, the site already tried to play,
+    already got refused, and has given up.</p>
+
+  <p>So valyou starts the video <b>itself</b>: it works out which player you touched,
+    approves that one video, un-mutes it, and plays it — then nudges once more 350ms
+    later in case the site reset things. It also opens a 15-second grace window that
+    survives page changes, so the video keeps playing when Facebook re-creates it in
+    full-screen view.</p>
+</section>
+
+<!-- ============ CH 7 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 7</p>
+  <h2>Reading the words inside pictures</h2>
+  <p class="lede">A huge share of online hate is a meme: the cruelty is painted into
+    the image, where no text reader can see it.</p>
+
+  <p>On phones, valyou hands the image to the operating system's built-in text
+    recognizer (Apple's Vision framework; Android's ML Kit next). Both run
+    <b>entirely offline</b> — no model to download, nothing sent anywhere — so this
+    costs no app size and breaks no promises.</p>
+
+  <figure>
+    <div class="flow">
+      <div class="step"><span class="n">01</span><b>Judge normally</b><span>Post survives on its words alone</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">02</span><b>Worth a look?</b><span>Big enough image, not seen before</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">03</span><b>Read it</b><span>The phone's own OCR, offline</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="n">04</span><b>Judge again</b><span>Image words added to the caption</span></div>
+    </div>
+    <figcaption>OCR runs only on posts that were <em>not</em> already filtered, so it
+      can add protection but never remove it.</figcaption>
+  </figure>
+
+  <p>The image's words are <b>appended to the post's own text</b> rather than judged
+    alone. That matters: a word on a T-shirt in a family photo gets read in context,
+    instead of standing alone looking like a statement.</p>
+
+  <p>Every part of this is bounded so a bottomless feed can't turn it into a battery
+    problem: results cached per image, 40 images per page, nothing under 160 pixels,
+    one at a time, hard time limits, and low-confidence readings thrown away — because
+    a misread word could invent a slur that was never there.</p>
+</section>
+
+<!-- ============ CH 8 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 8</p>
+  <h2>Why nothing leaks</h2>
+  <p class="lede">Most apps promise privacy in a policy document. valyou is built so
+    that breaking the promise would require rewriting the program.</p>
+
+  <div class="grid2">
+    <div class="card"><b>No network permission</b><p>The browser extension never requests the ability to send data. The browser itself enforces it — not a policy, a wall.</p></div>
+    <div class="card"><b>Text is never stored</b><p>A verdict is computed and the words are thrown away in the same instant.</p></div>
+    <div class="card"><b>Counters, not history</b><p>"41 filtered today" — a number, with nothing attached about what or whose.</p></div>
+    <div class="card"><b>Encrypted at rest</b><p>Even your settings are locked with AES-256-GCM, keyed by hardware (Secure Enclave / Android Keystore), device-only, never cloud-synced.</p></div>
+  </div>
+
+  <div class="callout win">
+    <span class="tag">Why this design, not a server</span>
+    <p>A server would be easier to build and would make a better demo. It would also
+      mean a database somewhere containing every hateful thing every user ever
+      scrolled past — a target worth stealing and a subpoena worth serving. The
+      safest data is data that was never collected.</p>
+  </div>
+
+  <p>There is one more layer: the web page is treated as an <b>enemy</b>. Settings
+    live in native storage and are pushed <em>into</em> the page read-only; only
+    counters come back. Even if a site attacked valyou's own code, there is nothing
+    there worth taking.</p>
+</section>
+
+<!-- ============ CH 9 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 9</p>
+  <h2>One brain, four bodies</h2>
+  <p class="lede">valyou runs in a desktop browser, in Safari, on iPhone, and on
+    Android. Writing that logic four times would guarantee four different sets of bugs.</p>
+
+  <figure>
+    <div class="stack">
+      <div class="layer l-shell"><b>Shells</b> — <span>Chrome/Brave extension · Safari extension · iPhone app · Android app</span></div>
+      <div class="layer l-engine"><b>The engine (shared, identical everywhere)</b> — <span>find posts · read text · rulebook · five-judge model · hide/blur/tag · video guards</span></div>
+      <div class="layer l-native"><b>Native services</b> — <span>encrypted settings · image text recognition</span></div>
+    </div>
+    <figcaption>Every shell loads the same engine. A fix made once is a fix
+      everywhere; a bug found on the phone is a bug fixed in the browser too.</figcaption>
+  </figure>
+
+  <p>On phones the shell is a <b>browser</b>, because neither iOS nor Android lets one
+    app reach inside another. A filtering browser is the only design that can work
+    and still be allowed in the stores.</p>
+
+  <div class="callout hard">
+    <span class="tag">A bug worth remembering</span>
+    <p>On Android, valyou filtered <b>nothing</b> — silently. The engine is handed to
+      the page as one long string of text, and Android's app-to-page channel has a
+      size limit of about one megabyte. Our engine, in the format Android counts,
+      weighed 1.3 MB. The system dropped it with no error, no warning, nothing.</p>
+    <p>The fix: send it in slices and reassemble them inside the page. The lesson:
+      <b>silence is not success.</b> Now the tests prove the engine is present, rather
+      than assuming.</p>
+  </div>
+</section>
+
+<!-- ============ CH 10 ============ -->
+<section class="chapter">
+  <p class="chapter-no">Chapter 10</p>
+  <h2>How we know it works</h2>
+  <p class="lede">Every claim in this document is checked by a machine, repeatedly,
+    because humans are bad at noticing what silently stopped working.</p>
+
+  <p>Roughly <b>260 automated tests</b> run on every change. They check the arithmetic,
+    the text handling, the encryption — and, most importantly, the promises:</p>
+
+  <ul>
+    <li>The learning machine's influence stays below every action threshold</li>
+    <li>Clean everyday posts don't get filtered</li>
+    <li>Each historical bug in this document stays fixed — one test per bug</li>
+  </ul>
+
+  <h3>Testing against the real thing</h3>
+  <p>Tests with fake pages can't catch Facebook changing its HTML. So valyou also has
+    a harness that launches a real browser, loads the real extension, opens a real
+    public post, and reports what happened.</p>
+
+  <div class="callout win">
+    <span class="tag">The rule that came from being wrong</span>
+    <p>Count what a <em>human</em> would see, not what the code believes. Early checks
+      counted "posts marked hidden" and looked healthy while a second copy of the same
+      post sat visible on screen. Now the harness measures actual pixel size and
+      visibility. If it is 0 pixels tall, it's gone. If it isn't, we aren't done.</p>
+  </div>
+</section>
+
+<!-- ============ NUMBERS ============ -->
+<section class="chapter">
+  <p class="chapter-no">Appendix A</p>
+  <h2>The numbers</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Thing</th><th class="num">Value</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td>Time to judge one post</td><td class="num">~0.25 ms</td><td>Faster than one screen refresh — you never see a delay</td></tr>
+      <tr><td>Time for all five model judges</td><td class="num">~0.018 ms</td><td>They share the chopping work, so five cost barely more than one</td></tr>
+      <tr><td>Model slots</td><td class="num">65,536</td><td>Fragment storage, per judge</td></tr>
+      <tr><td>Model size on disk</td><td class="num">~430 KB</td><td>Small enough to ship inside the app</td></tr>
+      <tr><td>Training examples</td><td class="num">~530,000</td><td>Up from 25,000 in version 1</td></tr>
+      <tr><td>Automated tests</td><td class="num">~260</td><td>Run on every change</td></tr>
+      <tr><td>Network requests made</td><td class="num">0</td><td>The whole point</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ GLOSSARY ============ -->
+<section class="chapter">
+  <p class="chapter-no">Appendix B</p>
+  <h2>Glossary</h2>
+  <dl>
+    <dt>DOM (Document Object Model)</dt>
+    <dd>The browser's tree of boxes that makes up a page. Programs read and change the page through it.</dd>
+    <dt>ARIA</dt>
+    <dd>Labels that describe what parts of a page are <em>for</em> so screen readers can work. Stable, because breaking them breaks accessibility.</dd>
+    <dt>Shadow DOM</dt>
+    <dd>A sealed compartment inside a page. Ordinary searching can't see in — which is where video players like to hide.</dd>
+    <dt>n-gram</dt>
+    <dd>A run of n things in a row — three letters, two words. valyou's clue format.</dd>
+    <dt>Hash function</dt>
+    <dd>A blender that turns any text into a number, always the same number for the same text.</dd>
+    <dt>Logistic regression</dt>
+    <dd>The model type here: multiply clues by learned weights, add them, squash to a probability.</dd>
+    <dt>Sigmoid</dt>
+    <dd>The S-curve that turns any number into a 0-to-1 probability.</dd>
+    <dt>AUC</dt>
+    <dd>A score for ranking ability: given one bad and one good example, how often is the bad one ranked higher? 0.5 = guessing, 1.0 = perfect.</dd>
+    <dt>Quantization</dt>
+    <dd>Storing numbers with less precision to save space — here, one byte per weight.</dd>
+    <dt>Noisy-OR</dt>
+    <dd>Combining independent evidence by computing the chance that <em>all</em> of it is wrong.</dd>
+    <dt>OCR</dt>
+    <dd>Optical Character Recognition — reading letters out of a picture.</dd>
+    <dt>AES-256-GCM</dt>
+    <dd>A strong encryption method that also detects tampering.</dd>
+  </dl>
+</section>
+
+<footer>
+  <p><b>valyou</b> — on-device social media content filtering · © 2026 Sunayu LLC ·
+     Free software under the GNU GPL v3.0 or later, with an App Store distribution
+     exception. Source: <a href="https://www.valyou.cx">valyou.cx</a></p>
+  <p>Written for anyone curious enough to ask how it actually works — every mechanism explained from first principles, no jargon left undefined.</p>
+</footer>
+
+</div>
+</body>
+</html>

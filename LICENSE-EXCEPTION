@@ -1,0 +1,50 @@
+valyou — App Store Distribution Exception
+=========================================
+
+Additional permission under GNU GPL version 3 section 7
+-------------------------------------------------------
+
+valyou is licensed under the GNU General Public License, version 3 or (at
+your option) any later version — see the LICENSE file for the full text.
+
+As the sole copyright holder of valyou, Sunayu LLC grants the following
+additional permission under section 7 of that license.
+
+You are given permission to distribute this Program, and any covered work,
+through an application distribution platform operated by Apple Inc. (the
+"App Store"), Google LLC ("Google Play"), or any comparable platform whose
+terms of service impose restrictions that would otherwise be incompatible
+with the GNU General Public License — including, without limitation, terms
+governing digital rights management, device installation, code signing,
+usage rules, or the number of devices on which a copy may be installed.
+
+For the avoidance of doubt: distributing valyou through such a platform
+does not, by itself, violate this license, and this permission extends to
+the platform operator solely to the extent required to host, sign,
+distribute, and install the Program.
+
+This is an additional permission, not a restriction. It does not remove any
+right the GNU General Public License grants you:
+
+  * The complete corresponding source code for every distributed version of
+    valyou remains available under the GPL, and any recipient may obtain,
+    study, modify, and redistribute it under the GPL's terms.
+
+  * Anyone who redistributes valyou, modified or unmodified, outside such a
+    platform remains bound by the GNU General Public License in full.
+
+  * You may remove this additional permission from your copy, or from any
+    copy you redistribute, as provided by section 7 of the GPL.
+
+Third-party components
+----------------------
+
+Some files in this repository are not ours and are not covered by the
+license above; they remain under their upstream terms, which are stated in
+their own headers:
+
+  * mobile/app/android/gradlew and gradlew.bat — Gradle Inc., Apache-2.0
+  * mobile/app/android/app/src/main/res/drawable/rn_edit_text_material.xml
+    — Android Open Source Project / React Native boilerplate, Apache-2.0
+
+Copyright (C) 2026 Sunayu LLC

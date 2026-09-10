@@ -1,0 +1,11 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["App.tsx", "src/**/*", "index.js"],
+  "exclude": ["node_modules"]
+}

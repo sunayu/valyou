@@ -1,0 +1,10 @@
+node_modules/
+frames/
+*.wav
+*.m4a
+*.mp4
+poster.png
+valyou-promo.html
+frames-portrait/
+poster-vertical.png
+valyou-promo-portrait.html

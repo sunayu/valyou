@@ -1,0 +1,702 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>valyou — Calm your social feed</title>
+<meta name="description" content="valyou hides hateful, violent, and rage-baiting posts on Facebook, Instagram, and X — entirely on your device." />
+
+<style>
+  /* ---------- Design tokens ---------- */
+  :root {
+    /* dark is the primary world; light redefines the same tokens below */
+    --ground: #0a0c11;
+    --ground-2: #0c0f16;
+    --surface: #12151d;
+    --surface-2: #171b25;
+    --line: rgba(255, 255, 255, 0.09);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --ink: #eef1f7;
+    --ink-soft: #9aa3b4;
+    --ink-faint: #626b7e;
+    --accent: #6b8cff;
+    --accent-2: #a082ff;
+    --safe: #56e0b0;
+    --flag: #ff8095;
+    --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+    --grad: linear-gradient(135deg, #4f7cff 0%, #8b6cff 100%);
+
+    --serif: ui-serif, "New York", Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", "Consolas", monospace;
+
+    --wrap: 1140px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --r: 18px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #eceff7;
+      --ground-2: #e6eaf5;
+      --surface: #ffffff;
+      --surface-2: #f4f6fc;
+      --line: rgba(18, 22, 34, 0.10);
+      --line-strong: rgba(18, 22, 34, 0.18);
+      --ink: #101420;
+      --ink-soft: #55607a;
+      --ink-faint: #8b94a8;
+      --accent: #3a63ec;
+      --accent-2: #7a54f0;
+      --safe: #0f9d73;
+      --flag: #e0435f;
+      --shadow: 0 30px 70px -34px rgba(31, 41, 82, 0.45);
+      --grad: linear-gradient(135deg, #2f6feb 0%, #7c5cff 100%);
+    }
+  }
+  /* viewer toggle overrides the media query, both directions */
+  :root[data-theme="dark"] {
+    --ground: #0a0c11; --ground-2: #0c0f16; --surface: #12151d; --surface-2: #171b25;
+    --line: rgba(255,255,255,.09); --line-strong: rgba(255,255,255,.16);
+    --ink: #eef1f7; --ink-soft: #9aa3b4; --ink-faint: #626b7e;
+    --accent: #6b8cff; --accent-2: #a082ff; --safe: #56e0b0; --flag: #ff8095;
+    --shadow: 0 30px 80px -30px rgba(0,0,0,.8);
+    --grad: linear-gradient(135deg,#4f7cff 0%,#8b6cff 100%);
+  }
+  :root[data-theme="light"] {
+    --ground: #eceff7; --ground-2: #e6eaf5; --surface: #ffffff; --surface-2: #f4f6fc;
+    --line: rgba(18,22,34,.10); --line-strong: rgba(18,22,34,.18);
+    --ink: #101420; --ink-soft: #55607a; --ink-faint: #8b94a8;
+    --accent: #3a63ec; --accent-2: #7a54f0; --safe: #0f9d73; --flag: #e0435f;
+    --shadow: 0 30px 70px -34px rgba(31,41,82,.45);
+    --grad: linear-gradient(135deg,#2f6feb 0%,#7c5cff 100%);
+  }
+
+  /* ---------- Base ---------- */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: color-mix(in srgb, var(--accent) 40%, transparent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding-inline: var(--pad); }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1rem;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-soft); }
+
+  /* ---------- Ambient background ---------- */
+  .aura {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(60vw 50vh at 78% -8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
+      radial-gradient(55vw 45vh at 8% 8%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 60%);
+    opacity: 0.7;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(1.4) blur(14px);
+    background: color-mix(in srgb, var(--ground) 72%, transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav-in { display: flex; align-items: center; gap: 1.5rem; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 650; letter-spacing: -0.02em; font-size: 1.18rem; }
+  .brand svg { width: 26px; height: 26px; display: block; }
+  .brand b { font-weight: 650; }
+  .nav-links { display: flex; gap: 1.6rem; margin-left: auto; }
+  .nav-links a { color: var(--ink-soft); font-size: 0.94rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { margin-left: 0.4rem; }
+  @media (max-width: 760px) { .nav-links { display: none; } .nav-cta { margin-left: auto; } }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--sans); font-size: 0.95rem; font-weight: 560;
+    padding: 0.7rem 1.15rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid transparent; transition: transform 0.15s ease, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--accent) 70%, transparent); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 38px -12px color-mix(in srgb, var(--accent) 80%, transparent); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  .btn-ghost:hover { background: var(--surface-2); transform: translateY(-2px); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: clamp(2.5rem, 7vw, 5.5rem); padding-bottom: clamp(3rem, 7vw, 6rem); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 {
+    font-size: clamp(2.7rem, 6.2vw, 4.6rem);
+    line-height: 1.02; margin: 0 0 1.4rem;
+  }
+  .hero h1 .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+  .hero .lede { font-size: clamp(1.05rem, 2vw, 1.24rem); color: var(--ink-soft); max-width: 34ch; margin: 0 0 2rem; }
+  .hero-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.7rem; }
+  .specline { display: flex; flex-wrap: wrap; gap: 0.55rem 1.1rem; font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.04em; color: var(--ink-faint); text-transform: uppercase; }
+  .specline span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .specline span::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--safe); box-shadow: 0 0 10px var(--safe); }
+
+  /* ---------- Demo device ---------- */
+  .device {
+    position: relative;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--ground-2) 100%);
+    border: 1px solid var(--line); border-radius: 26px; padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .device-top { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.6rem 0.9rem; }
+  .device-top .dot { width: 9px; height: 9px; border-radius: 999px; background: var(--line-strong); }
+  .device-title { font-size: 0.82rem; color: var(--ink-faint); font-family: var(--mono); letter-spacing: 0.06em; margin-left: 0.2rem; }
+  .toggle {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft); cursor: pointer; user-select: none;
+  }
+  .switch { width: 38px; height: 22px; border-radius: 999px; background: var(--grad); position: relative; transition: background 0.25s, opacity 0.25s; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 999px; background: #fff; transition: transform 0.25s; box-shadow: 0 2px 5px rgba(0,0,0,.35); }
+  .toggle[aria-pressed="false"] .switch { background: var(--line-strong); }
+  .toggle[aria-pressed="false"] .switch::after { transform: translateX(-16px); }
+
+  .feed { display: flex; flex-direction: column; gap: 10px; padding: 4px; max-height: 460px; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 26px, #000 calc(100% - 30px), transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 26px, #000 calc(100% - 30px), transparent 100%); }
+  .card {
+    position: relative; background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: 14px; padding: 12px 13px; overflow: hidden;
+  }
+  .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .avatar { width: 26px; height: 26px; border-radius: 999px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 60%, #444), color-mix(in srgb, var(--accent-2) 60%, #333)); flex: none; }
+  .who { font-size: 0.82rem; font-weight: 600; }
+  .when { font-size: 0.72rem; color: var(--ink-faint); }
+  .card p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; }
+  .card .kept { display: inline-flex; align-items: center; gap: 5px; margin-top: 9px; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--safe); opacity: 0.9; }
+  .card .kept::before { content: "✓"; font-family: var(--sans); }
+
+  /* scanning + flagged states, driven by JS classes */
+  .card .scan {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
+    transform: translateX(-100%);
+  }
+  .card.scanning .scan { opacity: 1; animation: sweep 0.9s ease-in-out; }
+  @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  .card .body { transition: filter 0.5s ease, opacity 0.5s ease; }
+  .card.caught .body { filter: blur(9px); opacity: 0.5; }
+
+  .card.collapsed { padding: 0; border-color: var(--line); background: color-mix(in srgb, var(--surface-2) 70%, var(--ground)); }
+  .card.collapsed .full { display: none; }
+  .veil {
+    display: none; align-items: center; gap: 10px; padding: 11px 13px;
+  }
+  .card.collapsed .veil { display: flex; }
+  .veil .shield-mini { width: 18px; height: 18px; flex: none; opacity: 0.9; }
+  .veil .label { font-size: 0.82rem; color: var(--ink-soft); }
+  .veil .cat { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--flag); }
+  .veil .show { margin-left: auto; font-family: var(--sans); font-size: 0.78rem; font-weight: 560; color: var(--accent); background: none; border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px; cursor: pointer; transition: background 0.2s; }
+  .veil .show:hover { background: var(--surface); }
+  .filter-off .card.collapsed { padding: 12px 13px; }
+  .filter-off .card.collapsed .full { display: block; }
+  .filter-off .card.collapsed .veil { display: none; }
+  .filter-off .card.caught .body { filter: none; opacity: 1; }
+
+  /* ---------- Generic section ---------- */
+  .section { padding-block: clamp(3.5rem, 8vw, 7rem); position: relative; }
+  .section-head { max-width: 40ch; margin-bottom: clamp(2rem, 4vw, 3.2rem); }
+  .section-head.center { margin-inline: auto; text-align: center; }
+  .section-head h2 { font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.08; margin: 0 0 1rem; }
+  .section-head p { margin: 0; color: var(--ink-soft); font-size: 1.06rem; }
+
+  .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+  /* ---------- Pipeline (how it works) ---------- */
+  .pipe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  @media (max-width: 820px) { .pipe { grid-template-columns: 1fr; } }
+  .stage { background: var(--surface); padding: 1.7rem 1.5rem; position: relative; }
+  .stage .n { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--accent); }
+  .stage h3 { font-size: 1.28rem; margin: 0.7rem 0 0.6rem; }
+  .stage p { margin: 0; color: var(--ink-soft); font-size: 0.96rem; }
+  .stage .tech { margin-top: 1rem; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); line-height: 1.7; }
+  .stage .arrow { position: absolute; right: -11px; top: 50%; transform: translateY(-50%); z-index: 2; color: var(--accent); }
+  @media (max-width: 820px) { .stage .arrow { display: none; } }
+
+  /* ---------- Categories ---------- */
+  .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 900px) { .cats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .cats { grid-template-columns: 1fr; } }
+  .cat-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 1.4rem 1.3rem; transition: transform 0.2s, border-color 0.2s; }
+  .cat-card:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+  .cat-card .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.7rem; }
+  .cat-card h3 { font-size: 1.14rem; margin: 0; font-family: var(--sans); font-weight: 620; letter-spacing: -0.01em; }
+  .chip { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--ink-soft); white-space: nowrap; }
+  .chip.hide { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .chip.blur { color: var(--accent-2); border-color: color-mix(in srgb, var(--accent-2) 45%, transparent); }
+  .cat-card p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+
+  /* ---------- Privacy (the peak) ---------- */
+  .privacy { position: relative; }
+  .privacy .panel {
+    background:
+      radial-gradient(80% 120% at 100% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
+      var(--surface);
+    border: 1px solid var(--line-strong); border-radius: 28px;
+    padding: clamp(2rem, 5vw, 4rem); overflow: hidden; position: relative;
+  }
+  .privacy .panel::after {
+    content: ""; position: absolute; right: -60px; bottom: -80px; width: 340px; height: 340px;
+    background: var(--grad); filter: blur(90px); opacity: 0.22; border-radius: 999px; pointer-events: none;
+  }
+  .privacy-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; position: relative; z-index: 1; }
+  @media (max-width: 860px) { .privacy-grid { grid-template-columns: 1fr; } }
+  .privacy h2 { font-size: clamp(2rem, 4.5vw, 3.1rem); margin: 0 0 1.1rem; line-height: 1.06; }
+  .privacy p { color: var(--ink-soft); margin: 0 0 1rem; max-width: 46ch; }
+  .facts { display: flex; flex-direction: column; gap: 12px; }
+  .fact { display: flex; gap: 12px; align-items: flex-start; background: color-mix(in srgb, var(--surface-2) 75%, transparent); border: 1px solid var(--line); border-radius: 14px; padding: 0.95rem 1.1rem; }
+  .fact .ic { color: var(--safe); flex: none; margin-top: 2px; }
+  .fact b { display: block; font-size: 0.98rem; font-weight: 620; }
+  .fact span { font-size: 0.86rem; color: var(--ink-soft); }
+
+  /* ---------- Platforms ---------- */
+  .plats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 780px) { .plats { grid-template-columns: 1fr; } }
+  .plat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 1.6rem 1.5rem; }
+  .plat .badge { width: 42px; height: 42px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; margin-bottom: 1rem; }
+  .plat h3 { font-family: var(--sans); font-weight: 620; font-size: 1.1rem; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .plat p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+  .plat .status { margin-top: 0.9rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+
+  /* ---------- Listing block ---------- */
+  .listing { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .lrow { display: grid; grid-template-columns: 160px 1fr; gap: 1.5rem; padding: 1.4rem clamp(1.2rem, 3vw, 2rem); border-top: 1px solid var(--line); }
+  .lrow:first-child { border-top: 0; }
+  @media (max-width: 680px) { .lrow { grid-template-columns: 1fr; gap: 0.5rem; } }
+  .lkey { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); padding-top: 3px; }
+  .lval { color: var(--ink); }
+  .lval .muted { color: var(--ink-faint); font-family: var(--mono); font-size: 0.78rem; }
+  .lval strong { font-weight: 620; }
+  .lval ul { margin: 0.6rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .lval li { position: relative; padding-left: 1.3rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .lval li::before { content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* ---------- Footer ---------- */
+  .foot { border-top: 1px solid var(--line); padding-block: 2.6rem; margin-top: 2rem; }
+  .foot-in { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; }
+  .foot .brand { font-size: 1rem; }
+  .foot p { margin: 0; color: var(--ink-faint); font-size: 0.85rem; }
+  .foot .spacer { margin-left: auto; }
+  .foot a { color: var(--ink-soft); font-size: 0.88rem; }
+  .foot a:hover { color: var(--ink); }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .card.scanning .scan { animation: none; }
+  }
+</style>
+
+<!-- reusable brand mark -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="vg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f7cff" />
+      <stop offset="1" stop-color="#8b6cff" />
+    </linearGradient>
+    <symbol id="shield" viewBox="0 0 100 100">
+      <path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#vg)" />
+      <path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+  </defs>
+</svg>
+
+<div class="aura" aria-hidden="true"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="valyou home">
+      <svg aria-hidden="true"><use href="#shield" /></svg>
+      <b>valyou</b>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#catches">What it catches</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#platforms">Platforms</a>
+    </nav>
+    <a class="btn btn-primary nav-cta" href="https://chromewebstore.google.com/detail/valyou/jileiaojeklemggbieacomlbbnmhpdgd" target="_blank" rel="noopener">Get valyou</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal in">
+        <p class="eyebrow">On-device content safety</p>
+        <h1>Take the <span class="em">hate</span> out of your feed.</h1>
+        <p class="lede">valyou quietly hides hateful, violent, and rage-baiting posts on Facebook, Instagram, and X — before you ever see them.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/valyou/jileiaojeklemggbieacomlbbnmhpdgd" target="_blank" rel="noopener">Add to Chrome — free</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <div class="specline" aria-label="Key properties">
+          <span>Runs on-device</span>
+          <span>AES-256 encrypted</span>
+          <span>Zero network</span>
+          <span>No account</span>
+        </div>
+      </div>
+
+      <!-- live filtering demo -->
+      <div class="reveal in">
+        <div class="device" id="demo">
+          <div class="device-top">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="device-title">your feed</span>
+            <button class="toggle" id="filterToggle" aria-pressed="true" aria-label="Toggle valyou filtering">
+              <span>valyou</span><span class="switch" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="feed" id="feed" aria-live="off"><!-- cards injected by script --></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROBLEM ================= -->
+  <section class="section" style="padding-block: clamp(2rem,5vw,4rem)">
+    <div class="wrap">
+      <hr class="rule" />
+      <div class="reveal" style="max-width: 62ch; margin: clamp(2rem,5vw,3.5rem) auto; text-align:center">
+        <h2 style="font-size: clamp(1.5rem,3.4vw,2.3rem); line-height:1.2; margin:0">
+          The feed isn't neutral. It's tuned to keep you angry — because outrage is what holds attention.
+          <span class="sub">valyou tunes it back.</span>
+        </h2>
+      </div>
+      <hr class="rule" />
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2>A classifier that lives on your device.</h2>
+        <p>Every post is read, scored, and acted on in the moment — locally, in memory, and then discarded. No cloud call, no external AI service, nothing to subscribe your data to.</p>
+      </div>
+      <div class="pipe reveal">
+        <div class="stage">
+          <span class="n">READ</span>
+          <h3>Understand the post</h3>
+          <p>valyou pulls the real text of each post, comment, ad, and message — anchored to the page's accessibility structure, so it keeps working as sites reshuffle their markup.</p>
+          <p class="tech">extractors · ARIA-anchored<br>Facebook · Instagram · X</p>
+          <span class="arrow" aria-hidden="true">→</span>
+        </div>
+        <div class="stage">
+          <span class="n">SCORE</span>
+          <h3>Weigh the signals</h3>
+          <p>Structural detection and an on-device machine-learning model combine into one calibrated score, with damping for news, quotation, and counter-speech so context isn't punished.</p>
+          <p class="tech">structural + ML (fastText-family)<br>noisy-OR combination</p>
+          <span class="arrow" aria-hidden="true">→</span>
+        </div>
+        <div class="stage">
+          <span class="n">ACT</span>
+          <h3>Hide, blur, or tag</h3>
+          <p>Cross a threshold and the post is collapsed, blurred, or tagged — your choice per category. A calm control lets you reveal anything with a tap.</p>
+          <p class="tech">per-category actions<br>reversible · your call</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHAT IT CATCHES ================= -->
+  <section class="section" id="catches">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">What it catches</p>
+        <h2>Five things you didn't ask to see.</h2>
+        <p>Turn each category on or off, and decide what happens when it's found. These are the defaults.</p>
+      </div>
+      <div class="cats">
+        <article class="cat-card reveal">
+          <div class="top"><h3>Racial hate</h3><span class="chip hide">Hide</span></div>
+          <p>Slurs, dehumanizing language, and coded racist tropes — including obfuscated and “dog-whistle” variants.</p>
+        </article>
+        <article class="cat-card reveal">
+          <div class="top"><h3>Gendered &amp; sexist hate</h3><span class="chip hide">Hide</span></div>
+          <p>Misogynistic and gender-based attacks, harassment framed as “just an opinion.”</p>
+        </article>
+        <article class="cat-card reveal">
+          <div class="top"><h3>Violence &amp; threats</h3><span class="chip hide">Hide</span></div>
+          <p>Calls for harm, glorified violence, and language that targets people or groups.</p>
+        </article>
+        <article class="cat-card reveal">
+          <div class="top"><h3>Harassment</h3><span class="chip blur">Blur</span></div>
+          <p>Pile-ons, demeaning insults, and content aimed at wearing a person down.</p>
+        </article>
+        <article class="cat-card reveal">
+          <div class="top"><h3>Rage bait</h3><span class="chip blur">Blur</span></div>
+          <p>Posts engineered purely to provoke — the outrage machine's raw material.</p>
+        </article>
+        <article class="cat-card reveal">
+          <div class="top"><h3>Every video</h3><span class="chip blur">Tap to play</span></div>
+          <p>Nothing autoplays. By default each video stays hidden until you choose to play it — you decide what earns your attention.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRIVACY ================= -->
+  <section class="section privacy" id="privacy">
+    <div class="wrap">
+      <div class="panel reveal">
+        <div class="privacy-grid">
+          <div>
+            <p class="eyebrow">Private by design</p>
+            <h2>Nothing you browse ever leaves your device.</h2>
+            <p>valyou has no servers and no accounts. The classifier, the model, and the encryption all live on your phone or in your browser. It can't see your feed — because your feed never reaches it.</p>
+            <p>That's also why it works without any paid AI service behind it: the intelligence is bundled in, not rented.</p>
+          </div>
+          <div class="facts">
+            <div class="fact"><span class="ic" aria-hidden="true">◆</span><div><b>No data collected</b><span>No tracking, no analytics, no ads. There is nothing to leak.</span></div></div>
+            <div class="fact"><span class="ic" aria-hidden="true">◆</span><div><b>Encrypted at rest</b><span>Your settings sit in the OS keystore, sealed with AES-256-GCM.</span></div></div>
+            <div class="fact"><span class="ic" aria-hidden="true">◆</span><div><b>Zero network access</b><span>The engine makes no outbound request of its own — ever.</span></div></div>
+            <div class="fact"><span class="ic" aria-hidden="true">◆</span><div><b>Yours to inspect</b><span>GPL-3.0 licensed free software. The way it decides is open to read.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATFORMS ================= -->
+  <section class="section" id="platforms">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Everywhere you scroll</p>
+        <h2>One filter. Every screen.</h2>
+        <p>The same engine — the same decisions — in your browser and in your pocket.</p>
+      </div>
+      <div class="plats">
+        <div class="plat reveal">
+          <div class="badge"><svg width="22" height="22" aria-hidden="true"><use href="#shield" /></svg></div>
+          <h3>Chrome extension</h3>
+          <p>Manifest V3. Filters the desktop web the instant a post loads, with a popup and full options page.</p>
+          <p class="status">● Core product</p>
+        </div>
+        <div class="plat reveal">
+          <div class="badge"><svg width="22" height="22" aria-hidden="true"><use href="#shield" /></svg></div>
+          <h3>iOS app</h3>
+          <p>A private, content-filtering browser for Facebook, Instagram, and X — the same engine, injected into every page.</p>
+          <p class="status">● Built · store submission next</p>
+        </div>
+        <div class="plat reveal">
+          <div class="badge"><svg width="22" height="22" aria-hidden="true"><use href="#shield" /></svg></div>
+          <h3>Android app</h3>
+          <p>The same filtering browser, packaged for Play — no accessibility hooks, no overlays, just a calmer feed.</p>
+          <p class="status">● Built · store submission next</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STORE LISTING COPY ================= -->
+  <section class="section" id="get">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Get valyou</p>
+        <h2>Add it to your browser.</h2>
+        <p>Free, open source, and on the Chrome Web Store. Installs in one click and starts filtering immediately — no account, no setup, nothing to configure before it works.</p>
+      </div>
+      <div class="hero-cta reveal" style="justify-content:center;margin-bottom:2rem">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/valyou/jileiaojeklemggbieacomlbbnmhpdgd" target="_blank" rel="noopener">Add to Chrome — free</a>
+        <a class="btn btn-ghost" href="https://github.com/bjames301/valyou" target="_blank" rel="noopener">Read the source</a>
+      </div>
+      <div class="listing reveal">
+        <div class="lrow">
+          <div class="lkey">Chrome</div>
+          <div class="lval"><a href="https://chromewebstore.google.com/detail/valyou/jileiaojeklemggbieacomlbbnmhpdgd" target="_blank" rel="noopener">Install from the Chrome Web Store</a> <span class="muted">· Chrome 116 or later</span></div>
+        </div>
+        <div class="lrow">
+          <div class="lkey">Brave, Edge, Opera</div>
+          <div class="lval">Same listing — every Chromium browser installs the Chrome Web Store version. <span class="muted">In Brave, allow extensions from the Chrome store when prompted.</span></div>
+        </div>
+        <div class="lrow">
+          <div class="lkey">iPhone &amp; Android</div>
+          <div class="lval">valyou for phones is a browser that filters as you scroll. <span class="muted">Coming to the App Store and Google Play.</span></div>
+        </div>
+        <div class="lrow">
+          <div class="lkey">Price</div>
+          <div class="lval">Free. <span class="muted">Free software under the GPLv3 — you can read exactly how it decides.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <a class="brand" href="#top"><svg width="22" height="22" aria-hidden="true"><use href="#shield" /></svg> <b>valyou</b></a>
+    <p>Calm your social feed.</p>
+    <span class="spacer"></span>
+    <a href="https://chromewebstore.google.com/detail/valyou/jileiaojeklemggbieacomlbbnmhpdgd" target="_blank" rel="noopener">Chrome Web Store</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <p>© 2026 Sunayu LLC · GPL-3.0-or-later</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    "use strict";
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---- nav shadow on scroll ---- */
+    var nav = document.getElementById("nav");
+    var onScroll = function () { nav.classList.toggle("scrolled", window.scrollY > 8); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    /* ---- reveal on scroll ---- */
+    var reveals = document.querySelectorAll(".reveal:not(.in)");
+    if ("IntersectionObserver" in window && !reduce) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      reveals.forEach(function (el) { io.observe(el); });
+    } else {
+      reveals.forEach(function (el) { el.classList.add("in"); });
+    }
+
+    /* ---- the live filtering demo ---- */
+    var feed = document.getElementById("feed");
+    var demo = document.getElementById("demo");
+    var toggle = document.getElementById("filterToggle");
+
+    // Clean posts (kept) and flagged posts (caught). We never render real hate —
+    // flagged cards carry only a neutral stand-in; the point is the filtering.
+    var CLEAN = [
+      { who: "Maya R.", when: "2m", text: "made the best carbonara of my life tonight 🍝 recipe in the comments" },
+      { who: "Trailhead", when: "9m", text: "golden hour from the ridge — worth every switchback" },
+      { who: "Dev Chen", when: "14m", text: "shipped the thing. small win, but I'll take it 🚀" },
+      { who: "Nora", when: "21m", text: "library run: three novels and zero self-control" },
+      { who: "City Parks", when: "33m", text: "the tulips are finally out along the river path 🌷" }
+    ];
+    var FLAGGED = [
+      { who: "@ragefarm", when: "just now", cat: "Rage bait" },
+      { who: "unknown", when: "1m", cat: "Harassment" },
+      { who: "@outrage_daily", when: "4m", cat: "Violence" }
+    ];
+
+    var SHIELD = '<svg class="shield-mini" aria-hidden="true"><use href="#shield" /></svg>';
+
+    function cleanCard(d) {
+      var el = document.createElement("div");
+      el.className = "card";
+      el.innerHTML =
+        '<div class="body">' +
+          '<div class="card-head"><div class="avatar"></div><div><div class="who">' + d.who + '</div><div class="when">' + d.when + '</div></div></div>' +
+          '<p>' + d.text + '</p>' +
+          '<span class="kept">kept</span>' +
+        '</div>';
+      return el;
+    }
+
+    function flaggedCard(d) {
+      var el = document.createElement("div");
+      el.className = "card flagged";
+      el.innerHTML =
+        '<span class="scan" aria-hidden="true"></span>' +
+        '<div class="full body">' +
+          '<div class="card-head"><div class="avatar"></div><div><div class="who">' + d.who + '</div><div class="when">' + d.when + '</div></div></div>' +
+          '<p>████████ ███████ ████ ██████████ ███ ████ ████████ ██████.</p>' +
+        '</div>' +
+        '<div class="veil">' + SHIELD +
+          '<span class="label">Hidden by valyou</span>' +
+          '<span class="cat">' + d.cat + '</span>' +
+          '<button class="show" type="button">Show</button>' +
+        '</div>';
+      var btn = el.querySelector(".show");
+      btn.addEventListener("click", function () {
+        el.classList.remove("collapsed", "caught");
+        btn.blur();
+      });
+      return el;
+    }
+
+    // Build a fixed, pleasant starting feed: clean, flagged, clean, clean, flagged, clean
+    var order = [
+      cleanCard(CLEAN[0]),
+      flaggedCard(FLAGGED[0]),
+      cleanCard(CLEAN[1]),
+      cleanCard(CLEAN[2]),
+      flaggedCard(FLAGGED[1]),
+      cleanCard(CLEAN[3])
+    ];
+    order.forEach(function (c) { feed.appendChild(c); });
+
+    var flaggedEls = order.filter(function (c) { return c.classList.contains("flagged"); });
+
+    // End state for reduced motion / filter-on: flagged collapsed immediately.
+    function collapseNow(el) { el.classList.add("caught", "collapsed"); }
+
+    if (reduce) {
+      flaggedEls.forEach(collapseNow);
+    } else {
+      // Animate each flagged card being caught, staggered, then loop gently.
+      var loopTimer = null;
+
+      function catchCard(el, delay) {
+        setTimeout(function () {
+          if (demo.classList.contains("filter-off")) { return; }
+          el.classList.add("scanning");
+          setTimeout(function () { el.classList.add("caught"); }, 700);
+          setTimeout(function () { el.classList.remove("scanning"); el.classList.add("collapsed"); }, 1300);
+        }, delay);
+      }
+
+      function runCycle() {
+        // reset
+        flaggedEls.forEach(function (el) { el.classList.remove("caught", "collapsed", "scanning"); });
+        flaggedEls.forEach(function (el, i) { catchCard(el, 900 + i * 1900); });
+        // schedule the next cycle after the last card settles + a rest beat
+        var total = 900 + (flaggedEls.length - 1) * 1900 + 1300 + 4200;
+        loopTimer = setTimeout(runCycle, total);
+      }
+
+      // Start when the demo scrolls into view (or immediately if already visible).
+      var started = false;
+      function start() { if (started) return; started = true; runCycle(); }
+      if ("IntersectionObserver" in window) {
+        var dio = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { start(); dio.disconnect(); } });
+        }, { threshold: 0.4 });
+        dio.observe(demo);
+      } else { start(); }
+    }
+
+    /* ---- filter on/off toggle ---- */
+    toggle.addEventListener("click", function () {
+      var on = toggle.getAttribute("aria-pressed") === "true";
+      toggle.setAttribute("aria-pressed", on ? "false" : "true");
+      demo.classList.toggle("filter-off", on); // on->false turns filtering off
+    });
+  })();
+</script>

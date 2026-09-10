@@ -1,0 +1,86 @@
+<!--
+valyou — on-device social media content filtering.
+Copyright (C) 2026 Sunayu LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Additional permission under GNU GPL version 3 section 7: this
+Program may be distributed through the Apple App Store, Google Play,
+or comparable platforms whose terms would otherwise be incompatible
+with the GPL. See LICENSE-EXCEPTION.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>valyou</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="popup">
+    <header class="popup-head">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 16 16">
+            <defs>
+              <linearGradient id="valyouShield" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2f6feb" />
+                <stop offset="1" stop-color="#7c5cff" />
+              </linearGradient>
+            </defs>
+            <path d="M4.32 2.24 H11.68 Q13.44 2.24 13.44 4 V8 Q13.2 11.2 8 14.4 Q2.8 11.2 2.56 8 V4 Q2.56 2.24 4.32 2.24 Z"
+              fill="url(#valyouShield)" />
+            <path d="M5.52 5.12 L8 9.92 L10.48 5.12" fill="none" stroke="#fff"
+              stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="wordmark">valyou</span>
+      </div>
+      <label class="switch" title="Turn filtering on or off everywhere">
+        <input type="checkbox" id="enabled" aria-label="Filtering enabled" />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <!-- Shown only when the vault is passphrase-locked. -->
+    <section id="locked" class="locked hidden">
+      <p>Your valyou data is locked.</p>
+      <input type="password" id="passphrase" placeholder="Passphrase" autocomplete="current-password" />
+      <button id="unlock" class="primary">Unlock</button>
+      <p class="error" id="unlock-error" role="alert"></p>
+    </section>
+
+    <section id="body">
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-value" id="today">0</span>
+          <span class="stat-label">filtered today</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="alltime">0</span>
+          <span class="stat-label">all time</span>
+        </div>
+      </div>
+
+      <h2>Categories</h2>
+      <ul class="category-list" id="categories"></ul>
+    </section>
+
+    <footer>
+      <button id="open-options" class="link">Settings</button>
+    </footer>
+
+    <script src="../lib/taxonomy.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

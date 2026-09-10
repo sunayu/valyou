@@ -1,0 +1,5 @@
+xcode/valyou/build/
+xcode/valyou/build-ios/
+xcode/**/xcuserdata/
+*.xcuserstate
+DerivedData/

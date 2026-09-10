@@ -1,0 +1,983 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		42517A4F3023D4500073902E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A4E3023D4500073902E /* AppDelegate.swift */; };
+		42517A513023D4500073902E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A503023D4500073902E /* SceneDelegate.swift */; };
+		42517A543023D4500073902E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42517A523023D4500073902E /* LaunchScreen.storyboard */; };
+		42517A573023D4500073902E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42517A553023D4500073902E /* Main.storyboard */; };
+		42517A603023D4500073902E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A5F3023D4500073902E /* AppDelegate.swift */; };
+		42517A633023D4500073902E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42517A613023D4500073902E /* Main.storyboard */; };
+		42517A6A3023D4500073902E /* valyou Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 42517A693023D4500073902E /* valyou Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		42517A743023D4500073902E /* valyou Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 42517A733023D4500073902E /* valyou Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		42517A793023D4500073902E /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 42517A3E3023D44F0073902E /* Main.html */; };
+		42517A7A3023D4500073902E /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 42517A3E3023D44F0073902E /* Main.html */; };
+		42517A7B3023D4500073902E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 42517A403023D44F0073902E /* Icon.png */; };
+		42517A7C3023D4500073902E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 42517A403023D44F0073902E /* Icon.png */; };
+		42517A7D3023D4500073902E /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 42517A413023D44F0073902E /* Style.css */; };
+		42517A7E3023D4500073902E /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 42517A413023D44F0073902E /* Style.css */; };
+		42517A7F3023D4500073902E /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 42517A423023D44F0073902E /* Script.js */; };
+		42517A803023D4500073902E /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 42517A423023D44F0073902E /* Script.js */; };
+		42517A813023D4500073902E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A433023D44F0073902E /* ViewController.swift */; };
+		42517A823023D4500073902E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A433023D44F0073902E /* ViewController.swift */; };
+		42517A833023D4500073902E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42517A443023D4500073902E /* Assets.xcassets */; };
+		42517A843023D4500073902E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42517A443023D4500073902E /* Assets.xcassets */; };
+		42517A853023D4500073902E /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A463023D4500073902E /* SafariWebExtensionHandler.swift */; };
+		42517A863023D4500073902E /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42517A463023D4500073902E /* SafariWebExtensionHandler.swift */; };
+		42517A9B3023D4500073902E /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 42517A983023D4500073902E /* icons */; };
+		42517A9C3023D4500073902E /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 42517A993023D4500073902E /* manifest.json */; };
+		42517A9D3023D4500073902E /* src in Resources */ = {isa = PBXBuildFile; fileRef = 42517A9A3023D4500073902E /* src */; };
+		42517A9E3023D4500073902E /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 42517A983023D4500073902E /* icons */; };
+		42517A9F3023D4500073902E /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 42517A993023D4500073902E /* manifest.json */; };
+		42517AA03023D4500073902E /* src in Resources */ = {isa = PBXBuildFile; fileRef = 42517A9A3023D4500073902E /* src */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42517A6B3023D4500073902E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42517A383023D44F0073902E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42517A683023D4500073902E;
+			remoteInfo = "valyou Extension (iOS)";
+		};
+		42517A753023D4500073902E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42517A383023D44F0073902E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42517A723023D4500073902E;
+			remoteInfo = "valyou Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		42517A8C3023D4500073902E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				42517A6A3023D4500073902E /* valyou Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A933023D4500073902E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				42517A743023D4500073902E /* valyou Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		42517A3F3023D44F0073902E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		42517A403023D44F0073902E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		42517A413023D44F0073902E /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		42517A423023D44F0073902E /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		42517A433023D44F0073902E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		42517A443023D4500073902E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		42517A463023D4500073902E /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		42517A4B3023D4500073902E /* valyou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = valyou.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42517A4E3023D4500073902E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		42517A503023D4500073902E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		42517A533023D4500073902E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		42517A563023D4500073902E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		42517A583023D4500073902E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42517A5D3023D4500073902E /* valyou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = valyou.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42517A5F3023D4500073902E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		42517A623023D4500073902E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		42517A643023D4500073902E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42517A693023D4500073902E /* valyou Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "valyou Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42517A6E3023D4500073902E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42517A733023D4500073902E /* valyou Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "valyou Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42517A783023D4500073902E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42517A983023D4500073902E /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
+		42517A993023D4500073902E /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = Resources/manifest.json; sourceTree = "<group>"; };
+		42517A9A3023D4500073902E /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = Resources/src; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42517A483023D4500073902E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A5A3023D4500073902E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A663023D4500073902E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A703023D4500073902E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42517A373023D44F0073902E = {
+			isa = PBXGroup;
+			children = (
+				42517A3C3023D44F0073902E /* Shared (App) */,
+				42517A453023D4500073902E /* Shared (Extension) */,
+				42517A4D3023D4500073902E /* iOS (App) */,
+				42517A5E3023D4500073902E /* macOS (App) */,
+				42517A6D3023D4500073902E /* iOS (Extension) */,
+				42517A773023D4500073902E /* macOS (Extension) */,
+				42517A4C3023D4500073902E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42517A3C3023D44F0073902E /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A433023D44F0073902E /* ViewController.swift */,
+				42517A443023D4500073902E /* Assets.xcassets */,
+				42517A3D3023D44F0073902E /* Resources */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		42517A3D3023D44F0073902E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				42517A3E3023D44F0073902E /* Main.html */,
+				42517A403023D44F0073902E /* Icon.png */,
+				42517A413023D44F0073902E /* Style.css */,
+				42517A423023D44F0073902E /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		42517A453023D4500073902E /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A973023D4500073902E /* Resources */,
+				42517A463023D4500073902E /* SafariWebExtensionHandler.swift */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		42517A4C3023D4500073902E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42517A4B3023D4500073902E /* valyou.app */,
+				42517A5D3023D4500073902E /* valyou.app */,
+				42517A693023D4500073902E /* valyou Extension.appex */,
+				42517A733023D4500073902E /* valyou Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		42517A4D3023D4500073902E /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A4E3023D4500073902E /* AppDelegate.swift */,
+				42517A503023D4500073902E /* SceneDelegate.swift */,
+				42517A523023D4500073902E /* LaunchScreen.storyboard */,
+				42517A553023D4500073902E /* Main.storyboard */,
+				42517A583023D4500073902E /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		42517A5E3023D4500073902E /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A5F3023D4500073902E /* AppDelegate.swift */,
+				42517A613023D4500073902E /* Main.storyboard */,
+				42517A643023D4500073902E /* Info.plist */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		42517A6D3023D4500073902E /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A6E3023D4500073902E /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		42517A773023D4500073902E /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				42517A783023D4500073902E /* Info.plist */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+		42517A973023D4500073902E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				42517A983023D4500073902E /* icons */,
+				42517A993023D4500073902E /* manifest.json */,
+				42517A9A3023D4500073902E /* src */,
+			);
+			name = Resources;
+			path = "Shared (Extension)";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42517A4A3023D4500073902E /* valyou (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42517A8D3023D4500073902E /* Build configuration list for PBXNativeTarget "valyou (iOS)" */;
+			buildPhases = (
+				42517A473023D4500073902E /* Sources */,
+				42517A483023D4500073902E /* Frameworks */,
+				42517A493023D4500073902E /* Resources */,
+				42517A8C3023D4500073902E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42517A6C3023D4500073902E /* PBXTargetDependency */,
+			);
+			name = "valyou (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "valyou (iOS)";
+			productReference = 42517A4B3023D4500073902E /* valyou.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42517A5C3023D4500073902E /* valyou (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42517A943023D4500073902E /* Build configuration list for PBXNativeTarget "valyou (macOS)" */;
+			buildPhases = (
+				42517A593023D4500073902E /* Sources */,
+				42517A5A3023D4500073902E /* Frameworks */,
+				42517A5B3023D4500073902E /* Resources */,
+				42517A933023D4500073902E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42517A763023D4500073902E /* PBXTargetDependency */,
+			);
+			name = "valyou (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "valyou (macOS)";
+			productReference = 42517A5D3023D4500073902E /* valyou.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42517A683023D4500073902E /* valyou Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42517A893023D4500073902E /* Build configuration list for PBXNativeTarget "valyou Extension (iOS)" */;
+			buildPhases = (
+				42517A653023D4500073902E /* Sources */,
+				42517A663023D4500073902E /* Frameworks */,
+				42517A673023D4500073902E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "valyou Extension (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "valyou Extension (iOS)";
+			productReference = 42517A693023D4500073902E /* valyou Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		42517A723023D4500073902E /* valyou Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42517A903023D4500073902E /* Build configuration list for PBXNativeTarget "valyou Extension (macOS)" */;
+			buildPhases = (
+				42517A6F3023D4500073902E /* Sources */,
+				42517A703023D4500073902E /* Frameworks */,
+				42517A713023D4500073902E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "valyou Extension (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "valyou Extension (macOS)";
+			productReference = 42517A733023D4500073902E /* valyou Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42517A383023D44F0073902E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					42517A4A3023D4500073902E = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					42517A5C3023D4500073902E = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					42517A683023D4500073902E = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					42517A723023D4500073902E = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = 42517A3B3023D44F0073902E /* Build configuration list for PBXProject "valyou" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42517A373023D44F0073902E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 42517A4C3023D4500073902E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42517A4A3023D4500073902E /* valyou (iOS) */,
+				42517A5C3023D4500073902E /* valyou (macOS) */,
+				42517A683023D4500073902E /* valyou Extension (iOS) */,
+				42517A723023D4500073902E /* valyou Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42517A493023D4500073902E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A7B3023D4500073902E /* Icon.png in Resources */,
+				42517A543023D4500073902E /* LaunchScreen.storyboard in Resources */,
+				42517A793023D4500073902E /* Main.html in Resources */,
+				42517A7F3023D4500073902E /* Script.js in Resources */,
+				42517A833023D4500073902E /* Assets.xcassets in Resources */,
+				42517A573023D4500073902E /* Main.storyboard in Resources */,
+				42517A7D3023D4500073902E /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A5B3023D4500073902E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A7C3023D4500073902E /* Icon.png in Resources */,
+				42517A7E3023D4500073902E /* Style.css in Resources */,
+				42517A633023D4500073902E /* Main.storyboard in Resources */,
+				42517A803023D4500073902E /* Script.js in Resources */,
+				42517A843023D4500073902E /* Assets.xcassets in Resources */,
+				42517A7A3023D4500073902E /* Main.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A673023D4500073902E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517AA03023D4500073902E /* src in Resources */,
+				42517A9F3023D4500073902E /* manifest.json in Resources */,
+				42517A9E3023D4500073902E /* icons in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A713023D4500073902E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A9D3023D4500073902E /* src in Resources */,
+				42517A9C3023D4500073902E /* manifest.json in Resources */,
+				42517A9B3023D4500073902E /* icons in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42517A473023D4500073902E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A813023D4500073902E /* ViewController.swift in Sources */,
+				42517A4F3023D4500073902E /* AppDelegate.swift in Sources */,
+				42517A513023D4500073902E /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A593023D4500073902E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A823023D4500073902E /* ViewController.swift in Sources */,
+				42517A603023D4500073902E /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A653023D4500073902E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A853023D4500073902E /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42517A6F3023D4500073902E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42517A863023D4500073902E /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42517A6C3023D4500073902E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42517A683023D4500073902E /* valyou Extension (iOS) */;
+			targetProxy = 42517A6B3023D4500073902E /* PBXContainerItemProxy */;
+		};
+		42517A763023D4500073902E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42517A723023D4500073902E /* valyou Extension (macOS) */;
+			targetProxy = 42517A753023D4500073902E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		42517A3E3023D44F0073902E /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42517A3F3023D44F0073902E /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		42517A523023D4500073902E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42517A533023D4500073902E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		42517A553023D4500073902E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42517A563023D4500073902E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		42517A613023D4500073902E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42517A623023D4500073902E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		42517A873023D4500073902E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		42517A883023D4500073902E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		42517A8A3023D4500073902E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "valyou Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari.Extension;
+				PRODUCT_NAME = "valyou Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42517A8B3023D4500073902E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "valyou Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari.Extension;
+				PRODUCT_NAME = "valyou Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42517A8E3023D4500073902E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = valyou;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari;
+				PRODUCT_NAME = valyou;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42517A8F3023D4500073902E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = valyou;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari;
+				PRODUCT_NAME = valyou;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42517A913023D4500073902E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "valyou Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari.Extension;
+				PRODUCT_NAME = "valyou Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42517A923023D4500073902E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "valyou Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari.Extension;
+				PRODUCT_NAME = "valyou Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		42517A953023D4500073902E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = valyou;
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari;
+				PRODUCT_NAME = valyou;
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42517A963023D4500073902E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D8UUS2D2WC;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = valyou;
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.valyou.safari;
+				PRODUCT_NAME = valyou;
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42517A3B3023D44F0073902E /* Build configuration list for PBXProject "valyou" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42517A873023D4500073902E /* Debug */,
+				42517A883023D4500073902E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42517A893023D4500073902E /* Build configuration list for PBXNativeTarget "valyou Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42517A8A3023D4500073902E /* Debug */,
+				42517A8B3023D4500073902E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42517A8D3023D4500073902E /* Build configuration list for PBXNativeTarget "valyou (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42517A8E3023D4500073902E /* Debug */,
+				42517A8F3023D4500073902E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42517A903023D4500073902E /* Build configuration list for PBXNativeTarget "valyou Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42517A913023D4500073902E /* Debug */,
+				42517A923023D4500073902E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42517A943023D4500073902E /* Build configuration list for PBXNativeTarget "valyou (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42517A953023D4500073902E /* Debug */,
+				42517A963023D4500073902E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42517A383023D44F0073902E /* Project object */;
+}

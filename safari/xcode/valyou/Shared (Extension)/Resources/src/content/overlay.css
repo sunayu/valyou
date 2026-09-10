@@ -1,0 +1,299 @@
+/*
+ * valyou — on-device social media content filtering.
+ * Copyright (C) 2026 Sunayu LLC
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional permission under GNU GPL version 3 section 7: this
+ * Program may be distributed through the Apple App Store, Google Play,
+ * or comparable platforms whose terms would otherwise be incompatible
+ * with the GPL. See LICENSE-EXCEPTION.
+ */
+
+/*
+ * Injected UI for filtered content — the most visible surface valyou has,
+ * seen dozens of times per session inside someone else's product.
+ *
+ * Design rules for this file:
+ *  - Quietly premium, never alarming. A filter that shouts is one users
+ *    switch off; the bar should read like a considered part of the page.
+ *  - Every rule is scoped under .valyou- and every declaration carries
+ *    !important, because Facebook and Instagram ship extremely
+ *    high-specificity generated CSS that would otherwise win.
+ *  - Custom properties are namespaced (--valyou-*) so the host page's own
+ *    variables can never bleed in.
+ */
+
+:root {
+  --valyou-brand-a: #2f6feb;
+  --valyou-brand-b: #7c5cff;
+  --valyou-bg: #15171d;
+  --valyou-fg: #e9ecf2;
+  --valyou-muted: #9aa2af;
+  --valyou-line: rgba(127, 140, 170, 0.28);
+  --valyou-radius: 12px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --valyou-bg: #ffffff;
+    --valyou-fg: #1a1d24;
+    --valyou-muted: #5d6572;
+    --valyou-line: rgba(90, 105, 140, 0.22);
+  }
+}
+
+/*
+ * Collapse, rather than display:none, so the host app's own intersection
+ * observers and virtual scroller still see a live element with a box.
+ */
+.valyou-collapsed > *:not(.valyou-bar) {
+  display: none !important;
+}
+
+.valyou-blurred > *:not(.valyou-shield) {
+  /* Enough blur to be unreadable, little enough that you can still see there
+     is a post there — that is the whole point of blur over hide. 16px plus an
+     opaque shield rendered as a flat panel, indistinguishable from a collapse. */
+  filter: blur(9px) saturate(0.6) !important;
+  /* Blocks reading through the blur and stops accidental clicks landing on
+     the content underneath. */
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.valyou-blurred {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: var(--valyou-radius) !important;
+}
+
+.valyou-bar,
+.valyou-shield,
+.valyou-badge {
+  box-sizing: border-box !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: var(--valyou-fg) !important;
+  z-index: 2147483000 !important; /* above the host app's own overlays */
+}
+
+/* The collapsed-content bar: brand accent on the left edge, label, action. */
+.valyou-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 11px 14px 11px 16px !important;
+  margin: 6px 0 !important;
+  background: var(--valyou-bg) !important;
+  border: 1px solid var(--valyou-line) !important;
+  border-radius: var(--valyou-radius) !important;
+  box-shadow: 0 1px 4px rgba(10, 14, 24, 0.08) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  /* The bar must stay tappable no matter what the host page does around it.
+     Facebook sets pointer-events:none on some card containers, and an
+     inherited "none" made the bar swallow every touch silently — the tap
+     produced no events at all, so the control looked simply dead. The shield
+     already carried this for the same reason; the bar was missing it. */
+  pointer-events: auto !important;
+  /* pan-y lets the page scroll vertically while HORIZONTAL movement is left to
+     us — without this the browser claims the sideways drag and the swipe is
+     never delivered. */
+  touch-action: pan-y !important;
+  user-select: none !important;
+  animation: valyou-enter 0.22s cubic-bezier(0.2, 0.7, 0.3, 1) backwards !important;
+}
+
+/* Everything inside the bar is tappable too, for the same reason. */
+.valyou-bar *,
+.valyou-shield * {
+  pointer-events: auto !important;
+}
+
+.valyou-reveal {
+  cursor: grab !important;
+  touch-action: pan-y !important;
+  user-select: none !important;
+  /* A finger-sized target: Apple and Google both recommend ~44px minimum. */
+  min-height: 34px !important;
+  min-width: 64px !important;
+}
+
+/* Gradient keel down the left edge — the brand signature, subtle at a glance. */
+.valyou-bar::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3.5px !important;
+  background: linear-gradient(180deg, var(--valyou-brand-a), var(--valyou-brand-b)) !important;
+}
+
+/* The shield's own text sits on a solid chip so it stays readable whatever the
+   post underneath looks like — a light frost is not a reliable backdrop. */
+.valyou-shield .valyou-label {
+  background: var(--valyou-bg) !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--valyou-line) !important;
+  box-shadow: 0 2px 10px rgba(10, 14, 24, 0.14) !important;
+  max-width: 92% !important;
+}
+
+.valyou-shield .valyou-reveal {
+  box-shadow: 0 2px 10px rgba(10, 14, 24, 0.18) !important;
+}
+
+/* The blur shield: frosted panel centred over preserved layout. */
+.valyou-shield {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  padding: 18px !important;
+  text-align: center !important;
+  /* A frosted pane you can see through, not a cover. The old 78% tint hid the
+     post completely, so "blur" looked identical to "hide" and the setting had
+     no visible meaning. */
+  background: color-mix(in srgb, var(--valyou-bg) 30%, transparent) !important;
+  backdrop-filter: blur(2px) saturate(1.05) !important;
+  border-radius: var(--valyou-radius) !important;
+  pointer-events: auto !important; /* re-enable clicks the blur rule disabled */
+  touch-action: pan-y !important; /* horizontal swipe is ours; vertical scrolls */
+  user-select: none !important;
+  animation: valyou-enter 0.22s cubic-bezier(0.2, 0.7, 0.3, 1) backwards !important;
+}
+
+/*
+ * Small shield glyph above the label, drawn in CSS — no image requests.
+ *
+ * The flex basis (not a fixed height) is deliberate: on a short unit — a
+ * one-line DM, a stubby comment — the shield's stack can be taller than the
+ * card, and a rigid glyph would push the label and button past the card's
+ * overflow:hidden edge. Letting the glyph shrink first (min-height: 0)
+ * means tight cards drop the ornament and keep the controls, never the
+ * other way round. The percentage clip-path scales with whatever box
+ * remains.
+ */
+.valyou-shield::before {
+  content: "" !important;
+  width: 30px !important;
+  flex: 0 1 34px !important;
+  min-height: 0 !important;
+  background: linear-gradient(135deg, var(--valyou-brand-a), var(--valyou-brand-b)) !important;
+  clip-path: polygon(50% 0%, 100% 18%, 100% 55%, 50% 100%, 0% 55%, 0% 18%) !important;
+  opacity: 0.9 !important;
+}
+
+/* The text and button must never be the things that get squeezed. */
+.valyou-shield .valyou-label,
+.valyou-shield .valyou-reveal {
+  flex: none !important;
+}
+
+.valyou-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 4px 11px !important;
+  margin: 6px 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(
+    135deg,
+    rgba(47, 111, 235, 0.14),
+    rgba(124, 92, 255, 0.14)
+  ) !important;
+  border: 1px solid rgba(47, 111, 235, 0.3) !important;
+  color: var(--valyou-brand-a) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.015em !important;
+  width: fit-content !important;
+}
+
+.valyou-label {
+  color: var(--valyou-muted) !important;
+  font-weight: 500 !important;
+  max-width: 46ch !important;
+}
+
+.valyou-reveal {
+  flex: none !important;
+  padding: 7px 15px !important;
+  border: 1px solid rgba(47, 111, 235, 0.45) !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: var(--valyou-brand-a) !important;
+  font: inherit !important;
+  font-size: 12.5px !important;
+  font-weight: 650 !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease !important;
+}
+
+.valyou-reveal:hover {
+  background: linear-gradient(135deg, var(--valyou-brand-a), var(--valyou-brand-b)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+.valyou-reveal:focus-visible {
+  outline: 2px solid var(--valyou-brand-a) !important;
+  outline-offset: 2px !important;
+}
+
+/*
+ * The enter animation must NOT fill forwards ("both"): a filled animation
+ * outranks inline styles in the cascade, so the swipe gesture's live
+ * translateX/opacity on the bar and shield were silently ignored — the surface
+ * never followed the finger, and on a desktop the pointer outran the button.
+ * "backwards" only covers the (zero) delay; once the animation ends, the
+ * element's own styles are back in charge.
+ */
+@keyframes valyou-enter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect user comfort preferences: no motion, no translucency. */
+@media (prefers-reduced-motion: reduce) {
+  .valyou-bar,
+.valyou-shield {
+    animation: none !important;
+  }
+  .valyou-reveal {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+.valyou-shield {
+    backdrop-filter: none !important;
+    background: var(--valyou-bg) !important;
+  }
+}

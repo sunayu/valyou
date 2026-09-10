@@ -1,0 +1,482 @@
+/*
+ * valyou — on-device social media content filtering.
+ * Copyright (C) 2026 Sunayu LLC
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional permission under GNU GPL version 3 section 7: this
+ * Program may be distributed through the Apple App Store, Google Play,
+ * or comparable platforms whose terms would otherwise be incompatible
+ * with the GPL. See LICENSE-EXCEPTION.
+ */
+
+/*
+ * The valyou design system, shared by the popup and the options page.
+ *
+ * Everything derives from the token block below — brand gradient, surface
+ * ramp, radii, shadows, type scale — so a rebrand is a token edit, not a
+ * stylesheet rewrite. Both themes are first-class: dark is not an inversion
+ * of light but its own tuned ramp.
+ *
+ * Extension pages are sandboxed from host CSS, so ordinary specificity is
+ * fine here — no !important, unlike the injected overlay stylesheet.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Tokens                                                              *
+ * ------------------------------------------------------------------ */
+
+:root {
+  /* Brand */
+  --brand-a: #2f6feb;
+  --brand-b: #7c5cff;
+  --brand-gradient: linear-gradient(135deg, var(--brand-a), var(--brand-b));
+
+  /* Light surface ramp */
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --fg: #171a21;
+  --muted: #5f6672;
+  --line: #e3e7ee;
+
+  --accent: var(--brand-a);
+  --accent-soft: rgba(47, 111, 235, 0.1);
+  --danger: #d3232f;
+  --ok: #178a50;
+
+  --radius-s: 8px;
+  --radius: 12px;
+  --radius-l: 18px;
+
+  --shadow-1: 0 1px 2px rgba(23, 26, 33, 0.05), 0 2px 8px rgba(23, 26, 33, 0.05);
+  --shadow-2: 0 2px 6px rgba(23, 26, 33, 0.07), 0 12px 32px rgba(23, 26, 33, 0.09);
+
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1015;
+    --surface: #171a21;
+    --surface-2: #1f2430;
+    --fg: #e9ecf2;
+    --muted: #98a0ad;
+    --line: #262c38;
+
+    --accent: #79a2ff;
+    --accent-soft: rgba(121, 162, 255, 0.13);
+    --danger: #ff6b74;
+    --ok: #3ecf8e;
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Base                                                                *
+ * ------------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+h2 { font-size: 15px; font-weight: 650; letter-spacing: -0.005em; margin: 0 0 6px; }
+h3 {
+  font-size: 11.5px; font-weight: 650; margin: 22px 0 8px;
+  text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+}
+p { margin: 0 0 12px; }
+
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.hidden { display: none !important; }
+.error { color: var(--danger); min-height: 1em; font-size: 13px; }
+
+::selection { background: var(--accent-soft); }
+
+/* Brand mark + wordmark lockup used in both page headers. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* The mark IS the shield now — no tile behind it. A soft drop shadow gives
+   the crest a little lift on both light and dark headers. */
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.brand-mark svg {
+  display: block;
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 2px 4px rgba(47, 111, 235, 0.35));
+}
+.wordmark {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ------------------------------------------------------------------ *
+ * Controls                                                            *
+ * ------------------------------------------------------------------ */
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease),
+    transform 0.1s var(--ease), box-shadow 0.15s var(--ease);
+}
+button:hover { border-color: var(--accent); box-shadow: var(--shadow-1); }
+button:active { transform: scale(0.98); }
+
+button.primary {
+  background: var(--brand-gradient);
+  border: none;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(47, 111, 235, 0.35);
+}
+button.primary:hover { filter: brightness(1.06); box-shadow: 0 4px 14px rgba(47, 111, 235, 0.45); }
+
+button.link { border: none; background: none; color: var(--accent); padding: 5px 8px; }
+button.link:hover { box-shadow: none; background: var(--accent-soft); }
+
+button.danger { border-color: color-mix(in srgb, var(--danger) 45%, transparent); color: var(--danger); }
+button.danger:hover { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 8%, transparent); }
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+  font: inherit;
+  width: 100%;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--fg);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea { resize: vertical; min-height: 60px; }
+
+/* Native checkboxes and radios pick up the brand through accent-color. */
+input[type="checkbox"], input[type="radio"] { accent-color: var(--brand-a); width: 15px; height: 15px; }
+
+button:focus-visible, .switch input:focus-visible + .slider {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+label { display: block; margin: 14px 0 5px; font-weight: 600; font-size: 13px; }
+label.inline { display: flex; align-items: flex-start; gap: 9px; font-weight: 450; margin: 8px 0; }
+label.inline input { width: auto; margin-top: 3px; flex: none; }
+
+.row { display: flex; gap: 8px; align-items: center; }
+.row input[type="range"] { flex: 1; }
+
+/* Styled range sliders — the sensitivity controls are the most-touched
+   input in the product, so they get the full treatment. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand-a), var(--brand-b));
+  opacity: 0.85;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--brand-a);
+  box-shadow: 0 1px 4px rgba(23, 26, 33, 0.25);
+  transition: transform 0.12s var(--ease);
+}
+input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.12); }
+input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 999px; }
+
+/* Toggle switch (popup master + category toggles). */
+.switch { position: relative; display: inline-block; width: 42px; height: 24px; margin: 0; flex: none; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch .slider {
+  position: absolute; inset: 0; cursor: pointer;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.switch .slider::before {
+  content: "";
+  position: absolute; height: 18px; width: 18px; left: 2px; top: 2px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(23, 26, 33, 0.3);
+  transition: transform 0.18s var(--ease);
+}
+.switch input:checked + .slider { background: var(--brand-gradient); border-color: transparent; }
+.switch input:checked + .slider::before { transform: translateX(18px); }
+
+/* ------------------------------------------------------------------ *
+ * Popup                                                               *
+ * ------------------------------------------------------------------ */
+
+.popup { width: 340px; padding: 16px 16px 10px; }
+
+.popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+/* Hero stat card: the one number that tells the user valyou is working. */
+.stat-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.stat {
+  flex: 1;
+  padding: 14px 12px 12px;
+  text-align: center;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+}
+.stat:first-child {
+  background: var(--brand-gradient);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(47, 111, 235, 0.35);
+}
+.stat:first-child .stat-label { color: rgba(255, 255, 255, 0.85); }
+.stat-value {
+  display: block;
+  font-size: 26px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label { font-size: 11px; font-weight: 550; color: var(--muted); letter-spacing: 0.02em; }
+
+.popup h2 {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 0 0 6px 2px;
+}
+
+.category-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 4px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+}
+.category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  margin: 0;
+  font-weight: 450;
+  border-radius: var(--radius-s);
+  transition: background 0.12s var(--ease);
+}
+.category:hover { background: var(--surface-2); }
+.category input { width: auto; flex: none; }
+.category-name { flex: 1; font-size: 13.5px; }
+.category-action {
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.locked { text-align: center; padding: 18px 6px; }
+.locked p { font-weight: 550; }
+.locked input { margin-bottom: 10px; }
+
+footer { display: flex; justify-content: center; padding-top: 2px; }
+
+/* ------------------------------------------------------------------ *
+ * Options                                                             *
+ * ------------------------------------------------------------------ */
+
+.options { max-width: 840px; margin: 0 auto; padding: 36px 28px 80px; }
+
+.page-head { margin-bottom: 26px; }
+.page-head .brand { margin-bottom: 10px; }
+.page-head p { max-width: 60ch; }
+
+/* Each section is a card: content reads as grouped, scannable blocks. */
+.options section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-1);
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+
+.pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  vertical-align: 2px;
+  padding: 3px 9px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.category-table { width: 100%; border-collapse: collapse; }
+.category-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding: 0 8px 8px 0;
+  font-weight: 650;
+}
+.category-table td {
+  padding: 14px 14px 14px 0;
+  vertical-align: top;
+  border-top: 1px solid var(--line);
+}
+.category-table td:first-child { width: 46%; }
+.category-table strong { font-size: 13.5px; }
+.category-table p { margin: 3px 0 0; line-height: 1.45; }
+.category-table output {
+  display: block;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 2px 18px;
+}
+
+/* Try-it output */
+.test-output { margin-top: 12px; }
+.verdict { font-weight: 650; font-size: 13.5px; }
+
+.score-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.score-list li { position: relative; margin: 4px 0; height: 24px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+.score-bar {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background: linear-gradient(90deg, var(--brand-a), var(--brand-b));
+  opacity: 0.28;
+  border-radius: 6px;
+  min-width: 2px;
+  transition: width 0.25s var(--ease);
+}
+.score-label {
+  position: relative;
+  font-size: 12px;
+  font-weight: 550;
+  padding-left: 8px;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-list { margin: 10px 0 0; padding-left: 18px; font-size: 12.5px; color: var(--muted); }
+.signal-list li { margin: 2px 0; }
+
+/* Security mode picker */
+.security-modes { display: grid; gap: 10px; margin: 12px 0; }
+.security-modes label.inline {
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  margin: 0;
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.security-modes label.inline:hover { border-color: var(--accent); }
+.security-modes label.inline:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.page-foot {
+  position: sticky;
+  bottom: 0;
+  padding: 10px 4px;
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+  pointer-events: none;
+}
+.page-foot [role="status"] { font-weight: 550; color: var(--ok); }
+
+/* ------------------------------------------------------------------ *
+ * Motion                                                              *
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

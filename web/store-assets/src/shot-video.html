@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="kit.css" />
+<style>
+  .stage { width: 1280px; height: 800px; padding: 64px 80px; display: flex; flex-direction: column; }
+  .cap { margin-bottom: 34px; }
+  .cap .eyebrow { font-size: 14px; margin-bottom: 12px; }
+  .cap h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; }
+  .cap h1 .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+  .body { flex: 1; display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; align-items: center; }
+  .card { background: linear-gradient(180deg, var(--surface) 0%, var(--ground-2) 100%); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 50px 100px -40px rgba(0,0,0,0.7); padding: 22px; }
+  .card .head { display: flex; align-items: center; gap: 11px; margin-bottom: 16px; }
+  .card .av { width: 40px; height: 40px; border-radius: 999px; background: linear-gradient(135deg,#4f7cff,#8b6cff); opacity: 0.85; }
+  .card .who { font-size: 17px; font-weight: 600; }
+  .card .when { font-size: 13px; color: var(--ink-faint); }
+  .video { position: relative; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; background:
+      repeating-linear-gradient(45deg, #14171f 0 22px, #171b25 22px 44px); display: grid; place-items: center; border: 1px solid var(--line); }
+  .video .frost { position: absolute; inset: 0; backdrop-filter: blur(2px); background: color-mix(in srgb, var(--ground) 40%, transparent); }
+  .gate { position: relative; text-align: center; }
+  .gate .play { width: 76px; height: 76px; border-radius: 999px; background: var(--grad); display: grid; place-items: center; margin: 0 auto 16px; box-shadow: 0 16px 40px -12px rgba(79,124,255,0.6); }
+  .gate .play::after { content: ""; width: 0; height: 0; border-left: 22px solid #fff; border-top: 14px solid transparent; border-bottom: 14px solid transparent; margin-left: 6px; }
+  .gate .lab { font-size: 16px; color: var(--ink); font-weight: 560; }
+  .gate .sub { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
+
+  .side .eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+  .opt { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; background: var(--surface); }
+  .opt .radio { width: 20px; height: 20px; border-radius: 999px; border: 2px solid var(--line-strong); flex: none; }
+  .opt.sel { border-color: color-mix(in srgb, var(--accent) 55%, transparent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+  .opt.sel .radio { border-color: var(--accent); background: radial-gradient(circle at center, var(--accent) 0 45%, transparent 46%); }
+  .opt b { display: block; font-size: 16px; font-weight: 600; }
+  .opt span { font-size: 13px; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap">
+    <div class="eyebrow">Video, on your terms</div>
+    <h1>Every video waits for your <span class="em">tap.</span></h1>
+  </div>
+  <div class="body">
+    <div class="card">
+      <div class="head"><span class="av"></span><span><div class="who">@outrage_daily</div><div class="when">Sponsored · 4m</div></span></div>
+      <div class="video">
+        <div class="frost"></div>
+        <div class="gate">
+          <div class="play"></div>
+          <div class="lab">Video hidden by valyou</div>
+          <div class="sub">Tap to play</div>
+        </div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="eyebrow">Video policy</div>
+      <div class="opt"><span class="radio"></span><span><b>Allow</b><span>Videos play normally</span></span></div>
+      <div class="opt"><span class="radio"></span><span><b>No autoplay</b><span>Loads, but never plays on its own</span></span></div>
+      <div class="opt sel"><span class="radio"></span><span><b>Tap to play</b><span>Hidden until you choose — the default</span></span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

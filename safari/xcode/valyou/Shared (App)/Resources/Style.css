@@ -1,0 +1,152 @@
+/*
+ * valyou Safari container-app styling.
+ * Brand look on top of the converter's default. The platform-/state- display
+ * rules at the bottom are REQUIRED by Script.js (it toggles those body classes)
+ * and are kept verbatim.
+ */
+* {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    cursor: default;
+}
+
+:root {
+    color-scheme: light dark;
+    --ground: #0a0c11;
+    --card: #12151d;
+    --line: rgba(255, 255, 255, 0.10);
+    --ink: #eef1f7;
+    --soft: #9aa3b4;
+    --faint: #6b7486;
+    --accent: #6b8cff;
+    --grad: linear-gradient(135deg, #4f7cff 0%, #8b6cff 100%);
+    --serif: ui-serif, "New York", Georgia, serif;
+    --sans: -apple-system, system-ui, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html { height: 100%; }
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100%;
+    font-family: var(--sans);
+    text-align: center;
+    color: var(--ink);
+    background:
+        radial-gradient(60% 50% at 82% -8%, rgba(107, 140, 255, 0.22), transparent 60%),
+        radial-gradient(55% 45% at 6% 8%, rgba(160, 130, 255, 0.16), transparent 60%),
+        var(--ground);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 440px;
+    margin: 0 28px;
+    padding: 40px 34px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+}
+
+.mark {
+    filter: drop-shadow(0 12px 26px rgba(79, 124, 255, 0.4));
+}
+
+h1 {
+    font-family: var(--sans);
+    font-weight: 650;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    margin: 6px 0 0;
+}
+
+.tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--soft);
+    margin: 0 0 6px;
+}
+
+.status p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--soft);
+    margin: 0;
+}
+
+.pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+.pill.on { background: rgba(86, 224, 176, 0.18); color: #56e0b0; }
+.pill.off { background: rgba(255, 128, 149, 0.18); color: #ff8095; }
+
+button.open-preferences {
+    margin-top: 6px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 560;
+    color: #fff;
+    background: var(--grad);
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px -10px rgba(107, 140, 255, 0.7);
+}
+button.open-preferences:hover { opacity: 0.94; }
+button.open-preferences:active { transform: translateY(1px); }
+
+.foot {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+    margin: 10px 0 0;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------------------
+ * REQUIRED by Script.js — do not remove. Script.js adds `platform-mac` /
+ * `platform-ios` and `state-on` / `state-off` to <body>; these rules show only
+ * the message that matches the current platform and extension state.
+ * ------------------------------------------------------------------------- */
+body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios) {
+    display: none;
+}
+
+body.platform-ios .platform-mac {
+    display: none;
+}
+
+body.platform-mac .platform-ios {
+    display: none;
+}
+
+body:not(.state-on, .state-off) :is(.state-on, .state-off) {
+    display: none;
+}
+
+body.state-on :is(.state-off, .state-unknown) {
+    display: none;
+}
+
+body.state-off :is(.state-on, .state-unknown) {
+    display: none;
+}

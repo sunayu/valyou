@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="kit.css" />
+<style>
+  .stage { width: 1280px; height: 800px; padding: 64px 80px; display: flex; flex-direction: column; }
+  .cap { margin-bottom: 34px; }
+  .cap .eyebrow { font-size: 14px; margin-bottom: 12px; }
+  .cap h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; }
+  .cap h1 .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+  .panel { flex: 1; background: linear-gradient(180deg, var(--surface) 0%, var(--ground-2) 100%); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 50px 100px -40px rgba(0,0,0,0.7); padding: 34px 40px; }
+  .panel-head { display: flex; align-items: center; gap: 12px; padding-bottom: 22px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .panel-head .shield { width: 26px; height: 26px; }
+  .panel-head h2 { font-family: var(--sans); font-weight: 650; font-size: 20px; letter-spacing: -0.01em; }
+  .panel-head .save { margin-left: auto; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--safe); }
+  .row { display: flex; align-items: center; gap: 20px; padding: 20px 4px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row .name { flex: 1; }
+  .row .name b { display: block; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .row .name span { font-size: 14px; color: var(--ink-faint); }
+  .seg { display: inline-flex; background: var(--ground); border: 1px solid var(--line); border-radius: 999px; padding: 4px; gap: 2px; }
+  .seg .opt { font-family: var(--sans); font-size: 14px; font-weight: 560; color: var(--ink-soft); padding: 7px 18px; border-radius: 999px; }
+  .seg .opt.on-hide { background: var(--grad); color: #fff; }
+  .seg .opt.on-blur { background: color-mix(in srgb, var(--accent-2) 85%, #000); color: #fff; }
+  .seg .opt.on-off { background: var(--surface-2); color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap">
+    <div class="eyebrow">Your rules</div>
+    <h1>You choose what to filter — <span class="em">and how.</span></h1>
+  </div>
+  <div class="panel">
+    <div class="panel-head">
+      <svg class="shield" viewBox="0 0 100 100"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#vg)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h2>Categories</h2>
+      <span class="save">Saved on-device</span>
+    </div>
+    <div class="row">
+      <div class="name"><b>Racial hate</b><span>Slurs, dehumanizing language, coded tropes</span></div>
+      <div class="seg"><span class="opt on-hide">Hide</span><span class="opt">Blur</span><span class="opt">Tag</span><span class="opt">Off</span></div>
+    </div>
+    <div class="row">
+      <div class="name"><b>Gendered &amp; sexist hate</b><span>Misogynistic and gender-based attacks</span></div>
+      <div class="seg"><span class="opt on-hide">Hide</span><span class="opt">Blur</span><span class="opt">Tag</span><span class="opt">Off</span></div>
+    </div>
+    <div class="row">
+      <div class="name"><b>Violence &amp; threats</b><span>Calls for harm, glorified violence</span></div>
+      <div class="seg"><span class="opt on-hide">Hide</span><span class="opt">Blur</span><span class="opt">Tag</span><span class="opt">Off</span></div>
+    </div>
+    <div class="row">
+      <div class="name"><b>Harassment</b><span>Pile-ons and demeaning insults</span></div>
+      <div class="seg"><span class="opt">Hide</span><span class="opt on-blur">Blur</span><span class="opt">Tag</span><span class="opt">Off</span></div>
+    </div>
+    <div class="row">
+      <div class="name"><b>Rage bait</b><span>Posts engineered purely to provoke</span></div>
+      <div class="seg"><span class="opt">Hide</span><span class="opt on-blur">Blur</span><span class="opt">Tag</span><span class="opt">Off</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

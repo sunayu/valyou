@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="kit.css" />
+<style>
+  .stage { width: 1280px; height: 800px; padding: 64px 80px; display: flex; flex-direction: column; }
+  .cap { margin-bottom: 34px; }
+  .cap .eyebrow { font-size: 14px; margin-bottom: 12px; }
+  .cap h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; }
+  .cap h1 .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+  .window { flex: 1; background: linear-gradient(180deg, var(--surface) 0%, var(--ground-2) 100%); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 50px 100px -40px rgba(0,0,0,0.7); display: flex; flex-direction: column; }
+  .bar { display: flex; align-items: center; gap: 10px; padding: 15px 20px; border-bottom: 1px solid var(--line); }
+  .bar .d { width: 11px; height: 11px; border-radius: 999px; background: var(--line-strong); }
+  .url { margin-left: 12px; flex: 1; background: var(--ground); border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+  .vbadge { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 999px; padding: 5px 12px; }
+  .vbadge svg { width: 15px; height: 15px; }
+  .cols { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 26px 30px; align-content: start; }
+  .mini-card .mini-text { font-size: 15px; }
+  .mini-card .mini-who { font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="cap">
+    <div class="eyebrow">The feed, filtered</div>
+    <h1>Hateful and rage-bait posts, <span class="em">hidden</span> before you see them.</h1>
+  </div>
+  <div class="window">
+    <div class="bar">
+      <span class="d"></span><span class="d"></span><span class="d"></span>
+      <span class="url">https://www.facebook.com</span>
+      <span class="vbadge"><svg viewBox="0 0 100 100"><defs><linearGradient id="vb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#vb)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg> valyou on</span>
+    </div>
+    <div class="cols">
+      <div class="mini-card">
+        <div class="mini-head"><span class="mini-av"></span><span><span class="mini-who">Maya R.</span> · <span class="mini-when">2m</span></span></div>
+        <div class="mini-text">made the best carbonara of my life tonight 🍝 recipe's in the comments</div>
+        <span class="mini-kept">✓ kept</span>
+      </div>
+      <div class="mini-card mini-veil">
+        <svg class="shield" viewBox="0 0 100 100" style="width:20px;height:20px"><defs><linearGradient id="v1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#v1)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lab">Hidden by valyou</span><span class="cat">Rage bait</span><span class="show">Show</span>
+      </div>
+      <div class="mini-card mini-veil">
+        <svg class="shield" viewBox="0 0 100 100" style="width:20px;height:20px"><defs><linearGradient id="v2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#v2)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lab">Hidden by valyou</span><span class="cat">Racial hate</span><span class="show">Show</span>
+      </div>
+      <div class="mini-card">
+        <div class="mini-head"><span class="mini-av"></span><span><span class="mini-who">Dev Chen</span> · <span class="mini-when">14m</span></span></div>
+        <div class="mini-text">shipped the thing. small win, but I'll take it 🚀</div>
+        <span class="mini-kept">✓ kept</span>
+      </div>
+      <div class="mini-card">
+        <div class="mini-head"><span class="mini-av"></span><span><span class="mini-who">City Parks</span> · <span class="mini-when">33m</span></span></div>
+        <div class="mini-text">the tulips are finally out along the river path 🌷</div>
+        <span class="mini-kept">✓ kept</span>
+      </div>
+      <div class="mini-card mini-veil">
+        <svg class="shield" viewBox="0 0 100 100" style="width:20px;height:20px"><defs><linearGradient id="v3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#v3)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lab">Hidden by valyou</span><span class="cat">Harassment</span><span class="show">Show</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "valyou",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Chrome extension that filters racist, hateful, sexist, violent and rage-baiting content out of Facebook and Instagram feeds, ads, and direct messages.",
+  "license": "GPL-3.0-or-later",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "test:watch": "node --test --watch \"test/*.test.js\"",
+    "test:coverage": "node --test --experimental-test-coverage \"test/*.test.js\"",
+    "icons": "node scripts/make-icons.js",
+    "release:chrome": "node scripts/publish-chrome.js",
+    "release:chrome:auth": "node scripts/cws-auth.js",
+    "model:data": "node scripts/fetch-training-data.js",
+    "model:train": "node scripts/train-model.js",
+    "model": "node scripts/fetch-training-data.js && node scripts/train-model.js"
+  }
+}

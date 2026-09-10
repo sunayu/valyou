@@ -1,0 +1,42 @@
+{
+  "name": "valyou-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "valyou — on-device content filtering browser for iOS and Android",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "bundle": "node ../scripts/build-bundle.js",
+    "icons": "node ../scripts/make-app-icons.js",
+    "start": "react-native start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "pod-install": "cd ios && pod install",
+    "lint": "eslint .",
+    "postinstall": "npm run bundle"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-webview": "13.12.5",
+    "react-native-keychain": "9.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/runtime": "^7.25.0",
+    "@react-native-community/cli": "15.0.1",
+    "@react-native-community/cli-platform-android": "15.0.1",
+    "@react-native-community/cli-platform-ios": "15.0.1",
+    "@react-native/babel-preset": "0.76.5",
+    "@react-native/eslint-config": "0.76.5",
+    "@react-native/metro-config": "0.76.5",
+    "@react-native/typescript-config": "0.76.5",
+    "@types/react": "^18.2.6",
+    "eslint": "^8.19.0",
+    "prettier": "2.8.8",
+    "typescript": "5.0.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

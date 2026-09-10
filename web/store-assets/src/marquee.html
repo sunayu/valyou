@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="kit.css" />
+<style>
+  .stage { width: 1400px; height: 560px; display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center; gap: 70px; padding: 0 90px; }
+  .mark { display: flex; align-items: center; gap: 18px; margin-bottom: 30px; }
+  .mark .shield { width: 62px; height: 62px; filter: drop-shadow(0 12px 26px rgba(79,124,255,0.4)); }
+  .mark .wordmark { font-size: 40px; }
+  .headline { font-family: var(--serif); font-weight: 600; font-size: 68px; line-height: 1.03; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .headline .em { font-style: italic; color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; }
+  .sub { font-size: 24px; color: var(--ink-soft); max-width: 30ch; margin-bottom: 34px; line-height: 1.4; }
+  .pills { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* right: mini feed showing the value */
+  .feed { display: flex; flex-direction: column; gap: 14px; }
+  .device { background: linear-gradient(180deg, var(--surface) 0%, var(--ground-2) 100%); border: 1px solid var(--line); border-radius: 24px; padding: 20px; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75); }
+  .device-top { display: flex; align-items: center; gap: 8px; padding: 4px 6px 16px; }
+  .device-top .d { width: 9px; height: 9px; border-radius: 999px; background: var(--line-strong); }
+  .device-top .t { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink-faint); margin-left: 6px; }
+  .glow { position: absolute; right: -60px; top: -80px; width: 360px; height: 360px; background: var(--grad); filter: blur(100px); opacity: 0.22; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="glow"></div>
+  <div>
+    <div class="mark">
+      <svg class="shield" viewBox="0 0 100 100"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#vg)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="wordmark">valyou</span>
+    </div>
+    <div class="headline">Take the <span class="em">hate</span><br>out of your feed.</div>
+    <div class="sub">On-device filtering for Facebook, Instagram, and X. Nothing you browse ever leaves your device.</div>
+    <div class="pills">
+      <span class="pill"><span class="dot"></span>On-device</span>
+      <span class="pill"><span class="dot"></span>Encrypted</span>
+      <span class="pill"><span class="dot"></span>No tracking</span>
+    </div>
+  </div>
+
+  <div class="device">
+    <div class="device-top"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">your feed</span></div>
+    <div class="feed">
+      <div class="mini-card">
+        <div class="mini-head"><span class="mini-av"></span><span><span class="mini-who">Maya R.</span> · <span class="mini-when">2m</span></span></div>
+        <div class="mini-text">made the best carbonara of my life tonight 🍝</div>
+        <span class="mini-kept">✓ kept</span>
+      </div>
+      <div class="mini-card mini-veil">
+        <svg class="shield" viewBox="0 0 100 100" style="width:20px;height:20px"><defs><linearGradient id="vg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f7cff"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs><path d="M18 24 Q18 14 28 14 H72 Q82 14 82 24 V50 Q82 75 50 90 Q18 75 18 50 Z" fill="url(#vg2)"/><path d="M35 37 L50 61 L65 37" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lab">Hidden by valyou</span><span class="cat">Rage bait</span><span class="show">Show</span>
+      </div>
+      <div class="mini-card">
+        <div class="mini-head"><span class="mini-av"></span><span><span class="mini-who">Trailhead</span> · <span class="mini-when">9m</span></span></div>
+        <div class="mini-text">golden hour from the ridge — worth every switchback</div>
+        <span class="mini-kept">✓ kept</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!--
+valyou — on-device social media content filtering.
+Copyright (C) 2026 Sunayu LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Additional permission under GNU GPL version 3 section 7: this
+Program may be distributed through the Apple App Store, Google Play,
+or comparable platforms whose terms would otherwise be incompatible
+with the GPL. See LICENSE-EXCEPTION.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>valyou settings</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="options">
+    <header class="page-head">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 16 16">
+            <defs>
+              <linearGradient id="valyouShield" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#2f6feb" />
+                <stop offset="1" stop-color="#7c5cff" />
+              </linearGradient>
+            </defs>
+            <path d="M4.32 2.24 H11.68 Q13.44 2.24 13.44 4 V8 Q13.2 11.2 8 14.4 Q2.8 11.2 2.56 8 V4 Q2.56 2.24 4.32 2.24 Z"
+              fill="url(#valyouShield)" />
+            <path d="M5.52 5.12 L8 9.92 L10.48 5.12" fill="none" stroke="#fff"
+              stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="wordmark">valyou</span>
+      </div>
+      <p class="muted">
+        Filters racist, hateful, sexist, violent and rage-baiting content out of your
+        Facebook and Instagram feed, ads, and messages — entirely on your device.
+      </p>
+    </header>
+
+    <main>
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>What to filter</h2>
+        <p class="muted">
+          Each category has an action and a sensitivity. Lower sensitivity filters
+          more and produces more false positives; the default values are tuned to
+          err toward leaving things visible.
+        </p>
+        <table class="category-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Action</th>
+              <th>Sensitivity</th>
+            </tr>
+          </thead>
+          <tbody id="category-rows"></tbody>
+        </table>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Where to filter</h2>
+        <div id="surface-toggles" class="checkbox-grid"></div>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Videos</h2>
+        <p class="muted">
+          valyou reads a post's text — caption, title, labels — but cannot watch
+          the video itself, so a hateful video under a clean caption can slip
+          past text filtering. Control what videos are allowed to do.
+        </p>
+        <label for="video-mode" class="hidden">Video handling</label>
+        <select id="video-mode">
+          <option value="hide">Block all videos — click to play (recommended)</option>
+          <option value="block">Don't autoplay — show paused, click to play</option>
+          <option value="allow">Allow videos to autoplay</option>
+        </select>
+        <p class="muted small" id="video-mode-note"></p>
+
+        <label class="inline">
+          <input type="checkbox" id="flagged-video-blur" />
+          Blur flagged videos behind a click, instead of collapsing them
+        </label>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Smart detection <span class="pill">on-device</span></h2>
+        <p class="muted">
+          A small machine-learning model, bundled with the extension, catches
+          hateful phrasing the pattern rules miss. It runs entirely on your
+          device — no network, no account — and is capped so it can only
+          reinforce the pattern rules, never hide anything on its own. Turn it
+          off to rely on patterns alone.
+        </p>
+        <label class="inline">
+          <input type="checkbox" id="ml-enabled" />
+          Use the on-device model to strengthen detection
+        </label>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Try it</h2>
+        <p class="muted">
+          Paste any text to see exactly how the on-device classifier scores it.
+          Nothing is sent anywhere.
+        </p>
+        <textarea id="test-input" rows="3" placeholder="Type or paste text…"></textarea>
+        <div id="test-output" class="test-output"></div>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Your rules</h2>
+        <label for="allow-authors">Never filter these people (one per line)</label>
+        <textarea id="allow-authors" rows="3"></textarea>
+
+        <label for="block-terms">Always filter text containing (one per line)</label>
+        <textarea id="block-terms" rows="3"></textarea>
+
+        <label for="allow-terms">Never filter text containing (one per line)</label>
+        <textarea id="allow-terms" rows="3"></textarea>
+      </section>
+
+      <!-- ---------------------------------------------------------- -->
+      <section>
+        <h2>Security &amp; privacy</h2>
+        <p class="muted">
+          valyou works entirely on your device. It makes no network requests, sends
+          nothing anywhere, and needs no account or API. Everything it stores —
+          your settings and its counters — is encrypted with AES-256-GCM before it
+          touches disk.
+        </p>
+
+        <div class="security-modes">
+          <label class="inline">
+            <input type="radio" name="keymode" value="device" id="keymode-device" />
+            <span>
+              <strong>Device key</strong> (default) — the encryption key is generated
+              inside the browser's crypto layer and can never be read back out by any
+              script, including this extension. No passphrase needed; filtering works
+              from the moment the browser starts.
+            </span>
+          </label>
+
+          <label class="inline">
+            <input type="radio" name="keymode" value="passphrase" id="keymode-passphrase" />
+            <span>
+              <strong>Passphrase</strong> — the key is additionally wrapped behind a
+              passphrase you choose (PBKDF2-SHA-256, 600,000 iterations). Strongest
+              protection if your machine is lost or imaged, but you must unlock valyou
+              once per browser session before it can filter anything.
+            </span>
+          </label>
+        </div>
+
+        <div id="passphrase-setup" class="row hidden">
+          <input type="password" id="new-passphrase" placeholder="Choose a passphrase" autocomplete="new-password" />
+          <input type="password" id="confirm-passphrase" placeholder="Confirm" autocomplete="new-password" />
+          <button id="enable-passphrase" class="primary">Enable</button>
+        </div>
+        <p class="error" id="security-error" role="alert"></p>
+
+        <h3>Your data</h3>
+        <p class="muted small">
+          valyou stores counters, not content. No post text, author name, or URL is
+          ever written to disk or sent anywhere — there is nowhere for it to go.
+        </p>
+        <button id="wipe" class="danger">Delete everything valyou has stored</button>
+      </section>
+    </main>
+
+    <footer class="page-foot">
+      <span class="muted small" id="save-state" role="status"></span>
+    </footer>
+
+    <script src="../lib/taxonomy.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

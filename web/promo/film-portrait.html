@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>valyou — promo (portrait render harness)</title>
+<style>
+  html, body { margin: 0; background: #000; height: 100%; overflow: hidden; }
+  #c { display: block; width: 100vw; height: 100vh; object-fit: contain; background: #000; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="film-portrait.js"></script>
+<script>
+  (function () {
+    var cv = document.getElementById("c");
+    var ctx = cv.getContext("2d", { alpha: false });
+    var FILM = window.VALYOU_FILM;
+    window.__frame = function (t) {
+      ctx.save();
+      ctx.clearRect(0, 0, FILM.W, FILM.H);
+      FILM.frame(ctx, t);
+      ctx.restore();
+      return true;
+    };
+    var q = new URLSearchParams(location.search);
+    if (q.has("t")) { window.__frame(parseFloat(q.get("t"))); return; }
+    if (q.has("capture")) { window.__frame(0); return; }
+    var start = null;
+    function loop(now) {
+      if (start == null) start = now;
+      window.__frame(((now - start) / 1000) % FILM.DUR);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  })();
+</script>
+</body>
+</html>

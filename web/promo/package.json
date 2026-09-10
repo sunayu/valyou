@@ -1,0 +1,10 @@
+{
+  "name": "valyou-promo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "valyou promo film — render pipeline",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}
